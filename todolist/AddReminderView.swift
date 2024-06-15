@@ -9,10 +9,7 @@ import SwiftUI
 
 struct AddReminderView: View {
     @Environment(\.dismiss) private var dismiss
-    
-    @State private var title = ""
-    @State private var description = ""
-    @State private var reminderDate: Date = .now
+    @State private var reminder = Reminder()
     @State private var showCalendar = false
     
     private func commit() {
@@ -27,8 +24,8 @@ struct AddReminderView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Title", text: $title)
-                    TextField("Description", text: $description, axis: .vertical)
+                    TextField("Title", text: $reminder.title)
+                    TextField("Description", text: $reminder.description, axis: .vertical)
                         .lineLimit(3...4)
                 }
                 Section {
@@ -39,16 +36,16 @@ struct AddReminderView: View {
                     .tint(.black)
                     if showCalendar {
                         DatePicker("Due Date",
-                                   selection: $reminderDate,
+                                   selection: $reminder.dueDate,
                                    displayedComponents: [.date, .hourAndMinute])
                     }
                 }
-                NavigationLink(destination: Text("hello")) {
+                NavigationLink(destination: MultiWeekdayPicker(selectedDays: $reminder.repeatingDays)) {
                     HStack {
                         Image(systemName: "repeat")
                         Text("Repeat")
                         Spacer()
-                        Text("Never")
+                        Text(reminder.text)
                             .foregroundStyle(Color.gray)
                     }
                 }
@@ -64,7 +61,7 @@ struct AddReminderView: View {
                   Button(action: commit) {
                     Text("Add")
                   }
-                  .disabled(title.isEmpty)
+                  .disabled(reminder.title.isEmpty)
                 }
             }
         }

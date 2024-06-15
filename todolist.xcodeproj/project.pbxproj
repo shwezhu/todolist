@@ -12,6 +12,8 @@
 		634129D72C1D0FD400B6014D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 634129D62C1D0FD400B6014D /* Assets.xcassets */; };
 		634129DA2C1D0FD400B6014D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 634129D92C1D0FD400B6014D /* Preview Assets.xcassets */; };
 		634129E12C1D102500B6014D /* AddReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E02C1D102500B6014D /* AddReminderView.swift */; };
+		634129E32C1D127B00B6014D /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E22C1D127B00B6014D /* Reminder.swift */; };
+		634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		634129D62C1D0FD400B6014D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		634129D92C1D0FD400B6014D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		634129E02C1D102500B6014D /* AddReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderView.swift; sourceTree = "<group>"; };
+		634129E22C1D127B00B6014D /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiWeekdayPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,8 @@
 				634129D22C1D0FD300B6014D /* todolistApp.swift */,
 				634129D42C1D0FD300B6014D /* HomeView.swift */,
 				634129E02C1D102500B6014D /* AddReminderView.swift */,
+				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
+				634129E22C1D127B00B6014D /* Reminder.swift */,
 				634129D62C1D0FD400B6014D /* Assets.xcassets */,
 				634129D82C1D0FD400B6014D /* Preview Content */,
 			);
@@ -143,6 +149,8 @@
 				634129D52C1D0FD300B6014D /* HomeView.swift in Sources */,
 				634129D32C1D0FD300B6014D /* todolistApp.swift in Sources */,
 				634129E12C1D102500B6014D /* AddReminderView.swift in Sources */,
+				634129E32C1D127B00B6014D /* Reminder.swift in Sources */,
+				634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
