@@ -12,21 +12,28 @@ struct HomeView: View {
     @State var reminders = mockData()
     
     var body: some View {
-        VStack {
-            List(reminders) { reminder in
-                ReminderCellView(reminder: reminder)
+        NavigationStack {
+            VStack {
+                List(reminders) { reminder in
+                    ReminderCellView(reminder: reminder)
+                }
+                HStack {
+                    Button {
+                        isAddReminderDialogPresented = true
+                    } label: {
+                        Label("New Reminder", systemImage: "plus")
+                            .fontWeight(.bold)
+                    }
+                    Spacer()
+                }
+                .padding(.leading)
             }
-            Button {
-                isAddReminderDialogPresented = true
-            } label: {
-                Label("New Reminder", systemImage: "plus.square")
+            .navigationTitle("Todo List")
+            .listStyle(PlainListStyle())
+            .sheet(isPresented: $isAddReminderDialogPresented) {
+                AddReminderView()
             }
         }
-        .sheet(isPresented: $isAddReminderDialogPresented) {
-            AddReminderView()
-        }
-        
-        
     }
 }
 
