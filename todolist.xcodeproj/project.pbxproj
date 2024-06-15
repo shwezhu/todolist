@@ -14,6 +14,7 @@
 		634129E12C1D102500B6014D /* AddReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E02C1D102500B6014D /* AddReminderView.swift */; };
 		634129E32C1D127B00B6014D /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E22C1D127B00B6014D /* Reminder.swift */; };
 		634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */; };
+		634129E72C1E3B5800B6014D /* ReminderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E62C1E3B5800B6014D /* ReminderCellView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		634129E02C1D102500B6014D /* AddReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderView.swift; sourceTree = "<group>"; };
 		634129E22C1D127B00B6014D /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiWeekdayPicker.swift; sourceTree = "<group>"; };
+		634129E62C1E3B5800B6014D /* ReminderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			children = (
 				634129D22C1D0FD300B6014D /* todolistApp.swift */,
 				634129D42C1D0FD300B6014D /* HomeView.swift */,
+				634129E62C1E3B5800B6014D /* ReminderCellView.swift */,
 				634129E02C1D102500B6014D /* AddReminderView.swift */,
 				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
 				634129E22C1D127B00B6014D /* Reminder.swift */,
@@ -150,6 +153,7 @@
 				634129D32C1D0FD300B6014D /* todolistApp.swift in Sources */,
 				634129E12C1D102500B6014D /* AddReminderView.swift in Sources */,
 				634129E32C1D127B00B6014D /* Reminder.swift in Sources */,
+				634129E72C1E3B5800B6014D /* ReminderCellView.swift in Sources */,
 				634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

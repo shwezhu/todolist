@@ -12,16 +12,37 @@ import Foundation
     let id: UUID = UUID()
     
     var title = ""
-    var description = ""
-    var dueDate: Date = .distantFuture
+    var description: String = ""
+    var dueDate: Date = .distantFuture {
+        didSet {
+            isDueDateInitialized = true
+        }
+    }
+    var isDueDateInitialized: Bool = false
     var repeatingDays: Set<Weekday> = []
     var isCompleted: Bool = false
 }
 
 extension Reminder {
-    var text: String {
+    var repeatingText: String {
         let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
         return "Every Week on " + daysText
+    }
+    
+    var formattedDueDate: String {
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US")
+        
+        if calendar.isDateInToday(dueDate) {
+            dateFormatter.dateFormat = "'Today,' h:mm a"
+        } else if calendar.isDateInTomorrow(dueDate) {
+            dateFormatter.dateFormat = "'Tomorrow,' h:mm a"
+        } else {
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+        }
+        
+        return dateFormatter.string(from: dueDate)
     }
 }
 

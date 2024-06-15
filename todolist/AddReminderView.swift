@@ -45,7 +45,7 @@ struct AddReminderView: View {
                         Image(systemName: "repeat")
                         Text("Repeat")
                         Spacer()
-                        Text(reminder.repeatingDays.isEmpty ? "Never" : reminder.text)
+                        Text(reminder.repeatingDays.isEmpty ? "Never" : reminder.repeatingText)
                             .foregroundStyle(Color.gray)
                     }
                 }
