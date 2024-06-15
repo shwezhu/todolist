@@ -20,13 +20,13 @@ import Foundation
 
 extension Reminder {
     var text: String {
-        let daysText = repeatingDays.map{$0.name}.joined(separator: ", ")
+        let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
         return "Every Week on " + daysText
     }
 }
 
 enum Weekday: CaseIterable, Identifiable {
-    case sunday, monday, tuesday, wednesday, thursday, friday, saturday
+    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
 
     var id: Self { self }
 }
