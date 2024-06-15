@@ -9,52 +9,43 @@ import SwiftUI
 
 struct MultiWeekdayPicker: View {
     @Binding var selectedDays: Set<Weekday>
-    @State var isNeverSelected = true
     
     var body: some View {
         NavigationStack {
             List {
-                Button {
-                    if !isNeverSelected {
-                        isNeverSelected.toggle()
-                        selectedDays.removeAll()
-                    }
-                } label: {
-                    HStack {
-                        Text("Never")
-                            .foregroundStyle(Color.black)
-                        Spacer()
-                        if isNeverSelected {
-                            Image(systemName: "checkmark")
-                                .foregroundStyle(Color.black)
-                        }
-                    }
+                ListItem(title: "Never", isSelected: selectedDays.isEmpty) {
+                    selectedDays.removeAll()
                 }
-                ForEach(Weekday.allCases) { day in
-                    Button{
-                        isNeverSelected = false
-                        if selectedDays.contains(day) && selectedDays.count != 1 {
+                
+                ForEach(Weekday.allCases, id: \.self) { day in
+                    ListItem(title: day.name.capitalized, isSelected: selectedDays.contains(day)) {
+                        if selectedDays.contains(day) {
                             selectedDays.remove(day)
                         } else {
                             selectedDays.insert(day)
-                        }
-                    }label: {
-                        HStack {
-                            Text(day.name.capitalized)
-                                .foregroundStyle(Color.black)
-                            Spacer()
-                            if selectedDays.contains(day) {
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.black)
-                            }
                         }
                     }
                 }
             }
             .navigationTitle("Repeat")
-            .onAppear {
-                if isNeverSelected {
-                    isNeverSelected = selectedDays.isEmpty
+        }
+    }
+}
+
+struct ListItem: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .foregroundStyle(Color.black)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .foregroundStyle(Color.black)
                 }
             }
         }
