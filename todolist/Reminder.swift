@@ -39,7 +39,7 @@ extension Reminder {
         } else if calendar.isDateInTomorrow(dueDate) {
             dateFormatter.dateFormat = "'Tomorrow,' h:mm a"
         } else {
-            dateFormatter.dateFormat = "MMM d, h:mm a"
+            dateFormatter.dateFormat = "dd/MM/yyyy, h:mm a"
         }
         
         return dateFormatter.string(from: dueDate)

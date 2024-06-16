@@ -40,7 +40,7 @@ struct HomeView: View {
 func mockData() -> [Reminder] {
     let reminder1 = Reminder()
     reminder1.title = "Buy groceries"
-    reminder1.description = "Get milk, eggs, and bread from the supermarket"
+    reminder1.description = "Get milk, eggs, and bread from the supermarket, Get milk, eggs, and bread from the supermarket, "
     reminder1.dueDate = Date().addingTimeInterval(3600) // Due in 1 hour
     reminder1.repeatingDays = [.monday, .wednesday, .friday]
     reminder1.isCompleted = false

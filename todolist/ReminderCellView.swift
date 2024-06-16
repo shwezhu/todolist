@@ -35,6 +35,12 @@ struct ReminderCellView: View {
     }
 }
 
+enum ReminderCellEvents {
+    case onChecked(Reminder, Bool)
+    case onSelect(Reminder)
+    case onInfoSelect(Reminder)
+}
+
 #Preview {
     ReminderCellView(reminder: mockData()[0])
 }
