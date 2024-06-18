@@ -1,16 +1,15 @@
 //
-//  AddReminderView.swift
-//  Todo List
+//  UpdateReminderView.swift
+//  todolist
 //
-//  Created by David Zhu on 2024-06-13.
+//  Created by David Zhu on 2024-06-17.
 //
 
 import SwiftUI
 
-struct AddReminderView: View {
+struct UpdateReminderView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var reminder = Reminder()
-    @State private var showCalendar = false
+    @Bindable var reminder: Reminder
     
     private func commit() {
         
@@ -23,16 +22,10 @@ struct AddReminderView: View {
     var body: some View {
         NavigationStack {
             ReminderFormView(reminder: reminder)
-            // 必须在 NavigationStack 里面, 否则按钮不会显示
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                  Button(action: cancel) {
-                    Text("Cancel")
-                  }
-                }
                 ToolbarItem(placement: .confirmationAction) {
                   Button(action: commit) {
-                    Text("Add")
+                    Text("Done")
                   }
                   .disabled(reminder.title.isEmpty)
                 }
@@ -42,6 +35,5 @@ struct AddReminderView: View {
 }
 
 #Preview {
-    AddReminderView()
+    UpdateReminderView(reminder: mockData()[0])
 }
-

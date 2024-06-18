@@ -8,7 +8,7 @@
 import Foundation
 
 // 必须使用 @Observable, 否则绑定属性不会生效 (子view无法修改来自父view的数据
-@Observable class Reminder: Identifiable {
+@Observable final class Reminder: Identifiable {
     let id: UUID = UUID()
     
     var title = ""

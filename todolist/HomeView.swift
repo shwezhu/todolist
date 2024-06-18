@@ -15,7 +15,9 @@ struct HomeView: View {
         NavigationStack {
             VStack {
                 List(reminders) { reminder in
-                    ReminderCellView(reminder: reminder)
+                    NavigationLink(destination: ReminderFormView(reminder: reminder)) {
+                        ReminderCellView(reminder: reminder)
+                    }
                 }
                 HStack {
                     Button {
