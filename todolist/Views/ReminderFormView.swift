@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ReminderFormView: View {
     @Bindable var reminder: Reminder
@@ -60,5 +61,10 @@ struct ReminderFormView: View {
 }
 
 #Preview {
-    ReminderFormView(reminder: Reminder())
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Reminder.self, configurations: config)
+    let reminder = Reminder()
+    
+    return ReminderFormView(reminder: reminder)
+        .modelContainer(container)
 }

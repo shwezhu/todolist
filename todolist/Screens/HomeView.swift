@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @State var isAddReminderDialogPresented = false
@@ -39,8 +40,7 @@ struct HomeView: View {
                 if reminders.isEmpty {
                     ContentUnavailableView(
                         label: {Label("No Reminders", systemImage: "list.number")},
-                        description: {Text("Add some reminders first to see your reminder list.")},
-                        actions: {Button("New Reminder") {isAddReminderDialogPresented = true}}
+                        description: {Text("Add some reminders first to see your reminder list.")}
                     )
                 }
             }
@@ -49,6 +49,10 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Reminder.self, configurations: config)
+
+    return HomeView()
+        .modelContainer(container)
 }
 

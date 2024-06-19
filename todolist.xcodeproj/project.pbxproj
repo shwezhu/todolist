@@ -65,15 +65,11 @@
 		634129D12C1D0FD300B6014D /* todolist */ = {
 			isa = PBXGroup;
 			children = (
+				634129F02C23521200B6014D /* Model */,
+				634129EF2C23519500B6014D /* Views */,
+				634129EE2C23517500B6014D /* Screens */,
 				634129D22C1D0FD300B6014D /* todolistApp.swift */,
-				634129D42C1D0FD300B6014D /* HomeView.swift */,
-				634129E62C1E3B5800B6014D /* ReminderCellView.swift */,
-				634129E82C207E8A00B6014D /* UpdateReminderView.swift */,
-				634129E02C1D102500B6014D /* AddReminderView.swift */,
-				634129EC2C21CC7300B6014D /* ReminderFormView.swift */,
 				634129EA2C20D32200B6014D /* test.swift */,
-				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
-				634129E22C1D127B00B6014D /* Reminder.swift */,
 				634129D62C1D0FD400B6014D /* Assets.xcassets */,
 				634129D82C1D0FD400B6014D /* Preview Content */,
 			);
@@ -86,6 +82,34 @@
 				634129D92C1D0FD400B6014D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		634129EE2C23517500B6014D /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				634129D42C1D0FD300B6014D /* HomeView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		634129EF2C23519500B6014D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				634129E62C1E3B5800B6014D /* ReminderCellView.swift */,
+				634129E02C1D102500B6014D /* AddReminderView.swift */,
+				634129E82C207E8A00B6014D /* UpdateReminderView.swift */,
+				634129EC2C21CC7300B6014D /* ReminderFormView.swift */,
+				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		634129F02C23521200B6014D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				634129E22C1D127B00B6014D /* Reminder.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

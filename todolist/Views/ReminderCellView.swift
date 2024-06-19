@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ReminderCellView: View {
     let reminder: Reminder
@@ -40,5 +41,10 @@ struct ReminderCellView: View {
 }
 
 #Preview {
-    ReminderCellView(reminder: Reminder())
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Reminder.self, configurations: config)
+    let reminder = Reminder(title: "buy cook")
+    
+    return ReminderCellView(reminder: reminder)
+        .modelContainer(container)
 }
