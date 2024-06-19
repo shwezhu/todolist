@@ -9,15 +9,23 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    @Environment(\.modelContext) var context
     @State var isAddReminderDialogPresented = false
-    var reminders: [Reminder] = []
+    @Query var reminders: [Reminder]
     
     var body: some View {
         NavigationStack {
             VStack {
-                List(reminders) { reminder in
-                    NavigationLink(destination: ReminderFormView(reminder: reminder)) {
-                        ReminderCellView(reminder: reminder)
+                List {
+                    ForEach(reminders) { reminder in
+                        NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
+                            ReminderCellView(reminder: reminder)
+                        }
+                    }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            context.delete(reminders[index])
+                        }
                     }
                 }
                 HStack {

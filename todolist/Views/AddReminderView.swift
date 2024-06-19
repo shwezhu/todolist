@@ -9,11 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct AddReminderView: View {
+    @Environment(\.modelContext) var context
     @Environment(\.dismiss) private var dismiss
     @State private var reminder = Reminder()
 
     private func commit() {
-        
+        context.insert(reminder)
+        dismiss() // dismiss the sheet
     }
     
     private func cancel() {

@@ -10,13 +10,9 @@ import SwiftData
 
 struct UpdateReminderView: View {
     @Environment(\.dismiss) private var dismiss
-    @Bindable var reminder: Reminder
+    @Bindable var reminder: Reminder // @Bindable Modifications will be saved to SwiftData.
     
     private func commit() {
-        
-    }
-    
-    private func cancel() {
         dismiss()
     }
     
