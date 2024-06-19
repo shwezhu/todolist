@@ -6,21 +6,27 @@
 //
 
 import Foundation
+import SwiftData
 
-// 必须使用 @Observable, 否则绑定属性不会生效 (子view无法修改来自父view的数据
-@Observable final class Reminder: Identifiable {
+// @Model also makes your class Observable.
+// 必须使用 @Observable, 否则访问绑定属性不会生效
+@Model
+final class Reminder: Identifiable {
     let id: UUID = UUID()
     
-    var title = ""
-    var description: String = ""
-    var dueDate: Date = .distantFuture {
-        didSet {
-            isDueDateInitialized = true
-        }
+    var title: String
+    var notes: String
+    var repeatingDays: Set<Weekday>
+    var dueDate: Date?
+    var completedDate: Date?
+    
+    init(title: String = "", notes: String = "", repeatingDays: Set<Weekday> = [], dueDate: Date? = nil, completedDate: Date? = nil) {
+        self.title = title
+        self.notes = notes
+        self.repeatingDays = repeatingDays
+        self.dueDate = dueDate
+        self.completedDate = completedDate
     }
-    var isDueDateInitialized: Bool = false
-    var repeatingDays: Set<Weekday> = []
-    var isCompleted: Bool = false
 }
 
 extension Reminder {
@@ -34,19 +40,21 @@ extension Reminder {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US")
         
-        if calendar.isDateInToday(dueDate) {
-            dateFormatter.dateFormat = "'Today,' h:mm a"
-        } else if calendar.isDateInTomorrow(dueDate) {
-            dateFormatter.dateFormat = "'Tomorrow,' h:mm a"
-        } else {
-            dateFormatter.dateFormat = "dd/MM/yyyy, h:mm a"
+        if let date = dueDate {
+            if calendar.isDateInToday(date) {
+                dateFormatter.dateFormat = "'Today,' h:mm a"
+            } else if calendar.isDateInTomorrow(date) {
+                dateFormatter.dateFormat = "'Tomorrow,' h:mm a"
+            } else {
+                dateFormatter.dateFormat = "dd/MM/yyyy, h:mm a"
+            }
+            return dateFormatter.string(from: date)
         }
-        
-        return dateFormatter.string(from: dueDate)
+        return ""
     }
 }
 
-enum Weekday: CaseIterable, Identifiable {
+enum Weekday: String, CaseIterable, Identifiable, Codable {
     case monday, tuesday, wednesday, thursday, friday, saturday, sunday
 
     var id: Self { self }

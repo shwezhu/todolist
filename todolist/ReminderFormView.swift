@@ -9,24 +9,41 @@ import SwiftUI
 
 struct ReminderFormView: View {
     @Bindable var reminder: Reminder
+    @State private var isDueDateSet: Bool
+    
+    init(reminder: Reminder) {
+        self.reminder = reminder
+        self._isDueDateSet = State(initialValue: reminder.dueDate != nil)
+    }
     
     var body: some View {
         Form {
             Section {
                 TextField("Title", text: $reminder.title)
-                TextField("Description", text: $reminder.description, axis: .vertical)
+                TextField("Description", text: $reminder.notes, axis: .vertical)
                     .lineLimit(3...4)
             }
             Section {
-                Toggle(isOn: $reminder.isDueDateInitialized) {
+                Toggle(isOn: $isDueDateSet) {
                     Image(systemName: "calendar")
                         .imageScale(.large)
                 }
                 .tint(.black)
-                if reminder.isDueDateInitialized {
+                .onChange (of: isDueDateSet) {
+                    if isDueDateSet {
+                        reminder.dueDate = Date()
+                    } else {
+                        reminder.dueDate = nil
+                    }
+                }
+                if isDueDateSet {
                     DatePicker("Due Date",
-                               selection: $reminder.dueDate,
-                               displayedComponents: [.date, .hourAndMinute])
+                               selection: Binding(
+                                get: { reminder.dueDate ?? Date() },
+                                    set: {reminder.dueDate = $0}
+                               ),
+                               displayedComponents: [.date, .hourAndMinute]
+                    )
                 }
             }
             NavigationLink(destination: MultiWeekdayPicker(selectedDays: $reminder.repeatingDays)) {
@@ -43,5 +60,5 @@ struct ReminderFormView: View {
 }
 
 #Preview {
-    ReminderFormView(reminder: mockData()[0])
+    ReminderFormView(reminder: Reminder())
 }

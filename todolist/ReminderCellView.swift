@@ -12,20 +12,24 @@ struct ReminderCellView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image(systemName: reminder.isCompleted ? "largecircle.fill.circle" : "circle")
+            Image(systemName: reminder.completedDate == nil ? "largecircle.fill.circle" : "circle")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
                 .onTapGesture {
-                    reminder.isCompleted.toggle()
+                    if reminder.completedDate == nil {
+                        reminder.completedDate = Date()
+                    } else {
+                        reminder.completedDate = nil
+                    }
                 }
             VStack(alignment: .leading) {
                 Text(reminder.title)
-                if !reminder.description.isEmpty {
-                    Text(reminder.description)
+                if !reminder.notes.isEmpty {
+                    Text(reminder.notes)
                         .font(.subheadline)
                         .foregroundStyle(Color.gray)
                 }
-                if reminder.isDueDateInitialized {
+                if reminder.dueDate != nil {
                     Text(reminder.formattedDueDate)
                         .font(.subheadline)
                         .foregroundStyle(Color.gray)
@@ -35,12 +39,6 @@ struct ReminderCellView: View {
     }
 }
 
-enum ReminderCellEvents {
-    case onChecked(Reminder, Bool)
-    case onSelect(Reminder)
-    case onInfoSelect(Reminder)
-}
-
 #Preview {
-    ReminderCellView(reminder: mockData()[0])
+    ReminderCellView(reminder: Reminder())
 }

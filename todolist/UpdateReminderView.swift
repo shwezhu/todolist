@@ -35,5 +35,5 @@ struct UpdateReminderView: View {
 }
 
 #Preview {
-    UpdateReminderView(reminder: mockData()[0])
+    UpdateReminderView(reminder: Reminder())
 }
