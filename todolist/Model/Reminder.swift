@@ -31,17 +31,27 @@ final class Reminder: Identifiable {
     }
 }
 
+enum Weekday: String, CaseIterable, Identifiable, Codable {
+    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
+
+    var id: Self { self }
+}
+
+extension Weekday {
+    var name: String {
+        switch self {
+        case .sunday: return "Sunday"
+        case .monday: return "Monday"
+        case .tuesday: return "Tuesday"
+        case .wednesday: return "Wednesday"
+        case .thursday: return "Thursday"
+        case .friday: return "Friday"
+        case .saturday: return "Saturday"
+        }
+    }
+}
+
 extension Reminder {
-//    var sortValue: Int {
-//        if completeDate != nil {
-//            return 2 // Completed, placed at the back.
-//        } else if dueDate == nil {
-//            return 0 // Uncompleted and without a deadline, placed at the top.
-//        } else {
-//            return 1 // Uncompleted with a deadline, placed in the middle.
-//        }
-//    }
-    
     var repeatingText: String {
         let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
         return "Every Week on " + daysText
@@ -66,22 +76,28 @@ extension Reminder {
     }
 }
 
-enum Weekday: String, CaseIterable, Identifiable, Codable {
-    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
-
-    var id: Self { self }
+extension Reminder {
+    public static func predicateFor(_ filter: ReminderPredicate) -> Predicate<Reminder>? {
+        var result: Predicate<Reminder>?
+        switch filter {
+        case .filterAllReminder:
+            result = nil
+        case .filterFinishedReminder:
+            result = #Predicate<Reminder> { $0.completeDate != nil }
+        case .filterScheduledReminder:
+            result = #Predicate<Reminder> { $0.dueDate != nil }
+        case .filterUnscheduledReminder:
+            result = #Predicate<Reminder> { $0.dueDate == nil }
+        case .filterUnfinishedReminder:
+            result = #Predicate<Reminder> { $0.completeDate == nil }
+        }
+        
+        return result
+    }
 }
 
-extension Weekday {
-    var name: String {
-        switch self {
-        case .sunday: return "Sunday"
-        case .monday: return "Monday"
-        case .tuesday: return "Tuesday"
-        case .wednesday: return "Wednesday"
-        case .thursday: return "Thursday"
-        case .friday: return "Friday"
-        case .saturday: return "Saturday"
-        }
-    }
+enum ReminderPredicate: CaseIterable, Identifiable {
+    case filterAllReminder, filterScheduledReminder, filterUnscheduledReminder, filterFinishedReminder, filterUnfinishedReminder
+
+    var id: Self { self }
 }
