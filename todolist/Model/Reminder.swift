@@ -18,18 +18,30 @@ final class Reminder: Identifiable {
     var notes: String
     var repeatingDays: Set<Weekday>
     var dueDate: Date?
-    var completedDate: Date?
+    var completeDate: Date?
+    var createDate: Date?
     
-    init(title: String = "", notes: String = "", repeatingDays: Set<Weekday> = [], dueDate: Date? = nil, completedDate: Date? = nil) {
+    init(title: String = "", notes: String = "", repeatingDays: Set<Weekday> = [], dueDate: Date? = nil, completedDate: Date? = nil, createDate: Date? = nil) {
         self.title = title
         self.notes = notes
         self.repeatingDays = repeatingDays
         self.dueDate = dueDate
-        self.completedDate = completedDate
+        self.completeDate = completedDate
+        self.createDate = createDate
     }
 }
 
 extension Reminder {
+//    var sortValue: Int {
+//        if completeDate != nil {
+//            return 2 // Completed, placed at the back.
+//        } else if dueDate == nil {
+//            return 0 // Uncompleted and without a deadline, placed at the top.
+//        } else {
+//            return 1 // Uncompleted with a deadline, placed in the middle.
+//        }
+//    }
+    
     var repeatingText: String {
         let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
         return "Every Week on " + daysText

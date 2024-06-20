@@ -13,14 +13,14 @@ struct ReminderCellView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image(systemName: reminder.completedDate == nil ? "circle" : "largecircle.fill.circle")
+            Image(systemName: reminder.completeDate == nil ? "circle" : "largecircle.fill.circle")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
                 .onTapGesture {
-                    if reminder.completedDate == nil {
-                        reminder.completedDate = Date()
+                    if reminder.completeDate == nil {
+                        reminder.completeDate = Date()
                     } else {
-                        reminder.completedDate = nil
+                        reminder.completeDate = nil
                     }
                 }
             VStack(alignment: .leading) {

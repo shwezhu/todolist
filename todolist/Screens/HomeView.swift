@@ -10,21 +10,36 @@ import SwiftData
 
 struct HomeView: View {
     @Environment(\.modelContext) var context
-    @State var isAddReminderDialogPresented = false
-    @Query var reminders: [Reminder]
+    @State private var isAddReminderDialogPresented = false
+    
+    // Computed properties can't be used in a query,
+    // https://stackoverflow.com/a/77218372/16317008
+    @Query(
+        filter: #Predicate<Reminder> { $0.completeDate != nil },
+        sort: [SortDescriptor(\Reminder.completeDate, order: .forward)]
+    )
+    var completedReminders: [Reminder]
+    @Query(
+        filter: #Predicate<Reminder> { $0.completeDate == nil && $0.dueDate != nil },
+        sort: [SortDescriptor(\Reminder.dueDate, order: .forward)])
+    var scheduledReminders: [Reminder]
+    @Query(
+        filter: #Predicate<Reminder> { $0.completeDate == nil && $0.dueDate == nil },
+        sort: [SortDescriptor(\Reminder.createDate, order: .forward)])
+    var unScheduledReminders: [Reminder]
     
     var body: some View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(reminders) { reminder in
+                    ForEach(scheduledReminders) { reminder in
                         NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
                             ReminderCellView(reminder: reminder)
                         }
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            context.delete(reminders[index])
+                            context.delete(scheduledReminders[index])
                         }
                     }
                 }
@@ -45,7 +60,7 @@ struct HomeView: View {
                 AddReminderView()
             }
             .overlay {
-                if reminders.isEmpty {
+                if scheduledReminders.isEmpty {
                     ContentUnavailableView(
                         label: {Label("No Reminders", systemImage: "list.number")},
                         description: {Text("Add some reminders first to see your reminder list.")}
