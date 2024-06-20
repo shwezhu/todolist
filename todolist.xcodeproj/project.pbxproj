@@ -18,6 +18,7 @@
 		634129E92C207E8A00B6014D /* UpdateReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E82C207E8A00B6014D /* UpdateReminderView.swift */; };
 		634129EB2C20D32200B6014D /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129EA2C20D32200B6014D /* test.swift */; };
 		634129ED2C21CC7300B6014D /* ReminderFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129EC2C21CC7300B6014D /* ReminderFormView.swift */; };
+		634129F22C23C10200B6014D /* ReminderCatagoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129F12C23C10200B6014D /* ReminderCatagoryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		634129E82C207E8A00B6014D /* UpdateReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateReminderView.swift; sourceTree = "<group>"; };
 		634129EA2C20D32200B6014D /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		634129EC2C21CC7300B6014D /* ReminderFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderFormView.swift; sourceTree = "<group>"; };
+		634129F12C23C10200B6014D /* ReminderCatagoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCatagoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				634129D42C1D0FD300B6014D /* HomeView.swift */,
+				634129F12C23C10200B6014D /* ReminderCatagoryView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				634129EB2C20D32200B6014D /* test.swift in Sources */,
 				634129E72C1E3B5800B6014D /* ReminderCellView.swift in Sources */,
 				634129ED2C21CC7300B6014D /* ReminderFormView.swift in Sources */,
+				634129F22C23C10200B6014D /* ReminderCatagoryView.swift in Sources */,
 				634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,6 +31,12 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                HStack(spacing: 20) {
+                    ReminderCatagoryView(reminderCount: scheduledReminders.count, catagoryName: "Scheduled")
+                    ReminderCatagoryView(reminderCount: scheduledReminders.count, catagoryName: "All")
+                }
+                .padding()
+        
                 List {
                     ForEach(scheduledReminders) { reminder in
                         NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
@@ -54,7 +60,7 @@ struct HomeView: View {
                 }
                 .padding(.leading)
             }
-            .navigationTitle("Todo List")
+            .background(Color(UIColor.systemGray6))
             .listStyle(PlainListStyle())
             .sheet(isPresented: $isAddReminderDialogPresented) {
                 AddReminderView()
