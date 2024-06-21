@@ -77,26 +77,36 @@ extension Reminder {
 }
 
 extension Reminder {
-    public static func predicateFor(_ filter: ReminderPredicate) -> Predicate<Reminder>? {
-        var result: Predicate<Reminder>?
+    public static func predicateFor(_ filter: ReminderPredicate) -> (Predicate<Reminder>?, [SortDescriptor<Reminder>]) {
+        var predicater: Predicate<Reminder>?
+        var sorter: [SortDescriptor<Reminder>]
+
         switch filter {
         case .filterAllReminder:
-            result = nil
-        case .filterFinishedReminder:
-            result = #Predicate<Reminder> { $0.completeDate != nil }
+            predicater = nil
+            sorter = [
+                SortDescriptor(\Reminder.completeDate, order: .forward),
+                SortDescriptor(\Reminder.dueDate, order: .forward)
+            ]
         case .filterScheduledReminder:
-            result = #Predicate<Reminder> { $0.dueDate != nil }
+            predicater = #Predicate { $0.dueDate != nil && $0.completeDate == nil }
+            sorter = [SortDescriptor(\Reminder.dueDate, order: .forward)]
         case .filterUnscheduledReminder:
-            result = #Predicate<Reminder> { $0.dueDate == nil }
+            predicater = #Predicate { $0.dueDate == nil && $0.completeDate == nil }
+            sorter = [SortDescriptor(\Reminder.createDate, order: .forward)]
+        case .filterFinishedReminder:
+            predicater = #Predicate { $0.completeDate != nil }
+            sorter = [SortDescriptor(\Reminder.completeDate, order: .forward)]
         case .filterUnfinishedReminder:
-            result = #Predicate<Reminder> { $0.completeDate == nil }
+            predicater = #Predicate { $0.completeDate == nil }
+            sorter = [SortDescriptor(\Reminder.dueDate, order: .forward)]
         }
         
-        return result
+        return (predicater, sorter)
     }
 }
 
-enum ReminderPredicate: CaseIterable, Identifiable {
+enum ReminderPredicate: String, CaseIterable, Identifiable {
     case filterAllReminder, filterScheduledReminder, filterUnscheduledReminder, filterFinishedReminder, filterUnfinishedReminder
 
     var id: Self { self }

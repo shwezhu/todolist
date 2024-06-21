@@ -8,38 +8,21 @@
 import SwiftUI
 import SwiftData
 
+struct DummyView: View {
+    var filter: ReminderPredicate
+    var body: some View {
+        ReminderListView(filter: filter)
+    }
+}
+
 struct ReminderListView: View {
     @Environment(\.modelContext) var context
-    @Query private var reminderList: [Reminder]
-    var listTitle: String
+    @Query var reminderList: [Reminder]
+    var title: String
     
-    init(title: String, filter: ReminderPredicate) {
-        self.listTitle = title
-        var sortDescriptors: [SortDescriptor<Reminder>]
-        var filterPredicate: Predicate<Reminder>?
-        
-        switch filter {
-        case .filterAllReminder:
-            filterPredicate = nil
-            sortDescriptors = [
-                SortDescriptor(\Reminder.completeDate, order: .forward),
-                SortDescriptor(\Reminder.dueDate, order: .forward)
-            ]
-        case .filterScheduledReminder:
-            filterPredicate = #Predicate { $0.dueDate != nil && $0.completeDate == nil }
-            sortDescriptors = [SortDescriptor(\Reminder.dueDate, order: .forward)]
-        case .filterUnscheduledReminder:
-            filterPredicate = #Predicate { $0.dueDate == nil && $0.completeDate == nil }
-            sortDescriptors = [SortDescriptor(\Reminder.createDate, order: .forward)]
-        case .filterFinishedReminder:
-            filterPredicate = #Predicate { $0.completeDate != nil }
-            sortDescriptors = [SortDescriptor(\Reminder.completeDate, order: .forward)]
-        case .filterUnfinishedReminder:
-            filterPredicate = #Predicate { $0.completeDate == nil }
-            sortDescriptors = [SortDescriptor(\Reminder.dueDate, order: .forward)]
-        }
-        
-        self._reminderList = Query(filter: filterPredicate, sort: sortDescriptors)
+    init(title: String = "Untitled", filter: ReminderPredicate) {
+        self.title = title
+        self._reminderList = Query(filter: Reminder.predicateFor(filter).0, sort: Reminder.predicateFor(filter).1)
     }
     
     var body: some View {
@@ -56,12 +39,12 @@ struct ReminderListView: View {
                     }
                 }
             }
-            .navigationTitle(listTitle)
+            .navigationTitle(title)
         }
     }
 }
 
 
 #Preview {
-    ReminderListView(title: "Scheduled", filter: .filterAllReminder)
+    ReminderListView(filter: .filterAllReminder)
 }
