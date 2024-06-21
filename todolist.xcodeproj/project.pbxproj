@@ -94,7 +94,6 @@
 				634129D42C1D0FD300B6014D /* HomeView.swift */,
 				634129E82C207E8A00B6014D /* UpdateReminderView.swift */,
 				634129E02C1D102500B6014D /* AddReminderView.swift */,
-				634129F32C245A8B00B6014D /* ReminderListView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -106,6 +105,7 @@
 				634129EC2C21CC7300B6014D /* ReminderFormView.swift */,
 				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
 				634129F12C23C10200B6014D /* ReminderCatagoryView.swift */,
+				634129F32C245A8B00B6014D /* ReminderListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -9,9 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    // @Environment(\.modelContext) var context
+    @Environment(\.modelContext) var context
     @State private var isAddReminderDialogPresented = false
-    // @State private var filter = ""
+    @State private var filter = ""
+    
     // Computed properties can't be used in a query,
     // https://stackoverflow.com/a/77218372/16317008
     @Query(filter: Reminder.predicateFor(.filterScheduledReminder).0,
@@ -26,28 +27,28 @@ struct HomeView: View {
         NavigationStack {
             VStack {
                 HStack(spacing: 20) {
-                    NavigationLink (destination: DummyView(filter: .filterAllReminder)) {
+                    NavigationLink (destination: DummyView(title: "ALL", filter: .filterAllReminder)) {
                         ReminderCatagoryView(reminderCount: allReminders.count, catagoryName: "All")
                     }
-                    NavigationLink (destination: DummyView(filter: .filterScheduledReminder)) {
+                    NavigationLink (destination: DummyView(title: "Scheduled", filter: .filterScheduledReminder)) {
                         ReminderCatagoryView(reminderCount: scheduledReminders.count, catagoryName: "Scheduled")
                     }
                 }
                 .padding()
-                Spacer()
-//                List {
-//                    ForEach(allReminders) { reminder in
-//                        NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
-//                            ReminderCellView(reminder: reminder)
-//                        }
-//                    }
-//                    .onDelete { indexSet in
-//                        for index in indexSet {
-//                            context.delete(allReminders[index])
-//                        }
-//                    }
-//                }
-//                .searchable(text: $filter, prompt: Text("Filter reminders on title"))
+                List {
+                    ForEach(unFinishedReminders) { reminder in
+                        NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
+                            ReminderCellView(reminder: reminder)
+                        }
+                    }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            context.delete(unFinishedReminders[index])
+                        }
+                    }
+                }
+                .searchable(text: $filter, prompt: Text("Search"))
+                .navigationBarTitleDisplayMode(.inline)
                 HStack {
                     Button {
                         isAddReminderDialogPresented = true
@@ -64,14 +65,14 @@ struct HomeView: View {
             .sheet(isPresented: $isAddReminderDialogPresented) {
                 AddReminderView()
             }
-            .overlay {
-                if true {
-                    ContentUnavailableView(
-                        label: {Label("No Reminders", systemImage: "list.number")},
-                        description: {Text("Add some reminders first to see your reminder list.")}
-                    )
-                }
-            }
+//            .overlay {
+//                if allReminders.isEmpty {
+//                    ContentUnavailableView(
+//                        label: {Label("No Reminders", systemImage: "list.number")},
+//                        description: {Text("Add some reminders first to see your reminder list.")}
+//                    )
+//                }
+//            }
         }
     }
 }

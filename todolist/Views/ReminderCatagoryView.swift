@@ -26,6 +26,7 @@ struct ReminderCatagoryView: View {
             Text("\(reminderCount)")
                 .font(.title)
                 .bold()
+                .foregroundStyle(catagoryName == "All" ? Color.blue : Color.black)
             
         }
         .padding()

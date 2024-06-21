@@ -9,9 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct DummyView: View {
+    var title: String
     var filter: ReminderPredicate
     var body: some View {
-        ReminderListView(filter: filter)
+        ReminderListView(title: title, filter: filter)
     }
 }
 
@@ -40,6 +41,7 @@ struct ReminderListView: View {
                 }
             }
             .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }
