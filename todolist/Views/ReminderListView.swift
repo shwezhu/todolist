@@ -59,6 +59,7 @@ struct ReminderListView: View {
         
     private func toggleCompletion(for reminder: Reminder) {
         reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+        // 虽然会自动保存, 但也得加这段代码, 否则动画不会生效
         do {
             try context.save()
         } catch {

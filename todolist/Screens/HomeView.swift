@@ -40,7 +40,9 @@ struct HomeView: View {
                     ForEach(unFinishedReminders) { reminder in
                         NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
                             ReminderCellView(reminder: reminder, namespace: animation) {
-                                reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    toggleCompletion(for: reminder)
+                                }
                             }
                         }
                     }
@@ -76,6 +78,16 @@ struct HomeView: View {
                     )
                 }
             }
+        }
+    }
+    
+    private func toggleCompletion(for reminder: Reminder) {
+        reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+        // 虽然会自动保存, 但也得加这段代码, 否则动画不会生效
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save context: \(error)")
         }
     }
 }
