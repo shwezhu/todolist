@@ -35,8 +35,7 @@ struct ReminderListView: View {
                     NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
                         ReminderCellView(reminder: reminder, namespace: animation) {
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                reminder.completedAt = reminder.completedAt == nil ? Date() : nil
-                                animationId = UUID()
+                                toggleCompletion(for: reminder)
                             }
                         }
                     }
@@ -47,7 +46,6 @@ struct ReminderListView: View {
                     }
                 }
             }
-            .id(animationId)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.large)
         }
@@ -56,6 +54,15 @@ struct ReminderListView: View {
     private func deleteReminders(at offsets: IndexSet) {
         for index in offsets {
             context.delete(reminders[index])
+        }
+    }
+        
+    private func toggleCompletion(for reminder: Reminder) {
+        reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save context: \(error)")
         }
     }
 }

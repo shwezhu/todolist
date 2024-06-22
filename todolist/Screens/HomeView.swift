@@ -68,14 +68,14 @@ struct HomeView: View {
             .sheet(isPresented: $isAddReminderDialogPresented) {
                 AddReminderView()
             }
-//            .overlay {
-//                if allReminders.isEmpty {
-//                    ContentUnavailableView(
-//                        label: {Label("No Reminders", systemImage: "list.number")},
-//                        description: {Text("Add some reminders first to see your reminder list.")}
-//                    )
-//                }
-//            }
+            .overlay {
+                if unFinishedReminders.isEmpty {
+                    ContentUnavailableView(
+                        label: {Label("No Reminders", systemImage: "list.number")},
+                        description: {Text("Add some reminders first to see your reminder list.")}
+                    )
+                }
+            }
         }
     }
 }
