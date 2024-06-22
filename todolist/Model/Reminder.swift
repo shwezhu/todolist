@@ -12,22 +12,23 @@ import SwiftData
 // 必须使用 @Observable, 否则访问绑定属性不会生效
 @Model
 final class Reminder: Identifiable {
-    let id: UUID = UUID()
+    let id: UUID
     
     var title: String
     var notes: String
     var repeatingDays: Set<Weekday>
     var dueDate: Date?
-    var completeDate: Date?
-    var createDate: Date?
+    var completedAt: Date?
+    var createdAt: Date
     
-    init(title: String = "", notes: String = "", repeatingDays: Set<Weekday> = [], dueDate: Date? = nil, completedDate: Date? = nil, createDate: Date? = nil) {
+    init(title: String = "", notes: String = "", repeatingDays: Set<Weekday> = [], dueDate: Date? = nil) {
+        self.id = UUID()
         self.title = title
         self.notes = notes
         self.repeatingDays = repeatingDays
         self.dueDate = dueDate
-        self.completeDate = completedDate
-        self.createDate = createDate
+        self.completedAt = nil
+        self.createdAt = Date()
     }
 }
 
@@ -85,20 +86,20 @@ extension Reminder {
         case .filterAllReminder:
             predicater = nil
             sorter = [
-                SortDescriptor(\Reminder.completeDate, order: .forward),
+                SortDescriptor(\Reminder.completedAt, order: .forward),
                 SortDescriptor(\Reminder.dueDate, order: .forward)
             ]
         case .filterScheduledReminder:
-            predicater = #Predicate { $0.dueDate != nil && $0.completeDate == nil }
+            predicater = #Predicate { $0.dueDate != nil && $0.completedAt == nil }
             sorter = [SortDescriptor(\Reminder.dueDate, order: .forward)]
         case .filterUnscheduledReminder:
-            predicater = #Predicate { $0.dueDate == nil && $0.completeDate == nil }
-            sorter = [SortDescriptor(\Reminder.createDate, order: .forward)]
+            predicater = #Predicate { $0.dueDate == nil && $0.completedAt == nil }
+            sorter = [SortDescriptor(\Reminder.createdAt, order: .forward)]
         case .filterFinishedReminder:
-            predicater = #Predicate { $0.completeDate != nil }
-            sorter = [SortDescriptor(\Reminder.completeDate, order: .forward)]
+            predicater = #Predicate { $0.completedAt != nil }
+            sorter = [SortDescriptor(\Reminder.completedAt, order: .forward)]
         case .filterUnfinishedReminder:
-            predicater = #Predicate { $0.completeDate == nil }
+            predicater = #Predicate { $0.completedAt == nil }
             sorter = [SortDescriptor(\Reminder.dueDate, order: .forward)]
         }
         
