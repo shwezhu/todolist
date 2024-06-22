@@ -87,7 +87,8 @@ extension Reminder {
             predicater = nil
             sorter = [
                 SortDescriptor(\Reminder.completedAt, order: .forward),
-                SortDescriptor(\Reminder.dueDate, order: .forward)
+                SortDescriptor(\Reminder.dueDate, order: .forward),
+                SortDescriptor(\Reminder.createdAt, order: .reverse),
             ]
         case .filterScheduledReminder:
             predicater = #Predicate { $0.dueDate != nil && $0.completedAt == nil }
@@ -100,7 +101,10 @@ extension Reminder {
             sorter = [SortDescriptor(\Reminder.completedAt, order: .forward)]
         case .filterUnfinishedReminder:
             predicater = #Predicate { $0.completedAt == nil }
-            sorter = [SortDescriptor(\Reminder.dueDate, order: .forward)]
+            sorter = [
+                SortDescriptor(\Reminder.dueDate, order: .forward),
+                SortDescriptor(\Reminder.createdAt, order: .reverse),
+            ]
         }
         
         return (predicater, sorter)

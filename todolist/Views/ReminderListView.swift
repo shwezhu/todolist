@@ -18,30 +18,44 @@ struct DummyView: View {
 
 struct ReminderListView: View {
     @Environment(\.modelContext) var context
-    @Query var reminderList: [Reminder]
+    @Query var reminders: [Reminder]
+    @Namespace private var animation
+    @State private var animationId = UUID()
     var title: String
     
     init(title: String = "Untitled", filter: ReminderPredicate) {
         self.title = title
-        self._reminderList = Query(filter: Reminder.predicateFor(filter).0, sort: Reminder.predicateFor(filter).1)
+        self._reminders = Query(filter: Reminder.predicateFor(filter).0, sort: Reminder.predicateFor(filter).1)
     }
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(reminderList) { reminder in
+                ForEach(reminders) { reminder in
                     NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
-                        ReminderCellView(reminder: reminder)
+                        ReminderCellView(reminder: reminder, namespace: animation) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+                                animationId = UUID()
+                            }
+                        }
                     }
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
-                        context.delete(reminderList[index])
+                        context.delete(reminders[index])
                     }
                 }
             }
+            .id(animationId)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.large)
+        }
+    }
+
+    private func deleteReminders(at offsets: IndexSet) {
+        for index in offsets {
+            context.delete(reminders[index])
         }
     }
 }

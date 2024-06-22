@@ -12,6 +12,7 @@ struct HomeView: View {
     @Environment(\.modelContext) var context
     @State private var isAddReminderDialogPresented = false
     @State private var filter = ""
+    @Namespace private var animation
     
     // Computed properties can't be used in a query,
     // https://stackoverflow.com/a/77218372/16317008
@@ -38,7 +39,9 @@ struct HomeView: View {
                 List {
                     ForEach(unFinishedReminders) { reminder in
                         NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
-                            ReminderCellView(reminder: reminder)
+                            ReminderCellView(reminder: reminder, namespace: animation) {
+                                reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+                            }
                         }
                     }
                     .onDelete { indexSet in
