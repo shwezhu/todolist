@@ -24,6 +24,17 @@ struct HomeView: View {
     var unFinishedReminders: [Reminder]
     @Query var allReminders: [Reminder]
     
+    var filteredReminders: [Reminder] {
+        if filter.isEmpty {
+            return unFinishedReminders
+        } else {
+            return allReminders.filter { reminder in
+                reminder.title.localizedCaseInsensitiveContains(filter) ||
+                reminder.notes.localizedCaseInsensitiveContains(filter)
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -37,7 +48,7 @@ struct HomeView: View {
                 }
                 .padding()
                 List {
-                    ForEach(unFinishedReminders) { reminder in
+                    ForEach(filteredReminders) { reminder in
                         NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
                             ReminderCellView(reminder: reminder, namespace: animation) {
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -48,7 +59,7 @@ struct HomeView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            context.delete(unFinishedReminders[index])
+                            context.delete(filteredReminders[index])
                         }
                     }
                 }
