@@ -13,7 +13,6 @@ import SwiftData
 @Model
 final class Reminder: Identifiable {
     let id: UUID
-    
     var title: String
     var notes: String
     var repeatingDays: Set<Weekday>
@@ -32,8 +31,8 @@ final class Reminder: Identifiable {
     }
 }
 
-enum Weekday: String, CaseIterable, Identifiable, Codable {
-    case monday, tuesday, wednesday, thursday, friday, saturday, sunday
+enum Weekday: Int, CaseIterable, Identifiable, Codable {
+    case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 
     var id: Self { self }
 }

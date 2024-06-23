@@ -47,13 +47,16 @@ struct ReminderFormView: View {
                     )
                 }
             }
-            NavigationLink(destination: MultiWeekdayPicker(selectedDays: $reminder.repeatingDays)) {
-                HStack {
-                    Image(systemName: "repeat")
-                    Text("Repeat")
-                    Spacer()
-                    Text(reminder.repeatingDays.isEmpty ? "Never" : reminder.repeatingText)
-                        .foregroundStyle(Color.gray)
+            
+            if isDueDateSet {
+                NavigationLink(destination: MultiWeekdayPicker(selectedDays: $reminder.repeatingDays)) {
+                    HStack {
+                        Image(systemName: "repeat")
+                        Text("Repeat")
+                        Spacer()
+                        Text(reminder.repeatingDays.isEmpty ? "Never" : reminder.repeatingText)
+                            .foregroundStyle(Color.gray)
+                    }
                 }
             }
         }
