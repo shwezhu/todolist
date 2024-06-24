@@ -20,14 +20,14 @@ final class NotificationManager {
     }
     
     static func scheduleNotification(for reminder: Reminder) {
+        guard let dueDate = reminder.dueDate else {
+            return
+        }
+        
         let content = UNMutableNotificationContent()
         content.title = "有任务要做啦"
         content.body = reminder.title
         content.sound = .default
-        
-        guard let dueDate = reminder.dueDate else {
-            return
-        }
         
         let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
