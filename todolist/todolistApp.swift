@@ -10,6 +10,10 @@ import SwiftData
 
 @main
 struct todolistApp: App {
+    init() {
+        NotificationManager.requestNotificationPermission()
+    }
+    
     var body: some Scene {
         WindowGroup {
             HomeView()

@@ -13,6 +13,7 @@ struct UpdateReminderView: View {
     @Bindable var reminder: Reminder // @Bindable Modifications will be saved to SwiftData.
     
     private func commit() {
+        NotificationManager.updateNotification(for: reminder)
         dismiss()
     }
     

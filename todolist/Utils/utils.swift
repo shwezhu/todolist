@@ -60,6 +60,13 @@ func createNextRepeatingReminder(for reminder: Reminder, in context: ModelContex
 
 func toggleCompletion(for reminder: Reminder, in context: ModelContext) {
     reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+    
+    if reminder.completedAt == nil {
+        NotificationManager.scheduleNotification(for: reminder)
+    } else {
+        NotificationManager.removeNotification(for: reminder)
+    }
+    
     // 虽然会自动保存, 但也得加这段代码, 否则动画不会生效
     do {
         try context.save()
@@ -69,3 +76,4 @@ func toggleCompletion(for reminder: Reminder, in context: ModelContext) {
     
     createNextRepeatingReminder(for: reminder, in: context)
 }
+

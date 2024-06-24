@@ -15,6 +15,7 @@ struct AddReminderView: View {
 
     private func commit() {
         context.insert(reminder)
+        NotificationManager.scheduleNotification(for: reminder)
         dismiss() // dismiss the sheet
     }
     

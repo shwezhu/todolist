@@ -42,7 +42,7 @@ final class NotificationManager {
     
     static func removeNotification(for reminder: Reminder) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.id.uuidString])
-    }  
+    }
     
     static func updateNotification(for reminder: Reminder) {
         removeNotification(for: reminder)

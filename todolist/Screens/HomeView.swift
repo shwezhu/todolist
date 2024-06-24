@@ -59,7 +59,9 @@ struct HomeView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            context.delete(filteredReminders[index])
+                            let reminder = filteredReminders[index]
+                            NotificationManager.removeNotification(for: reminder)
+                            context.delete(reminder)
                         }
                     }
                 }
