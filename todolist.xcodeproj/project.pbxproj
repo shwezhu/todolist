@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		631E53392C29036600D99FF7 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631E53382C29036600D99FF7 /* NotificationManager.swift */; };
 		634129D32C1D0FD300B6014D /* todolistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129D22C1D0FD300B6014D /* todolistApp.swift */; };
 		634129D52C1D0FD300B6014D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129D42C1D0FD300B6014D /* HomeView.swift */; };
 		634129D72C1D0FD400B6014D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 634129D62C1D0FD400B6014D /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		631E53382C29036600D99FF7 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		634129CF2C1D0FD300B6014D /* todolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634129D22C1D0FD300B6014D /* todolistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todolistApp.swift; sourceTree = "<group>"; };
 		634129D42C1D0FD300B6014D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -52,6 +54,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		631E53372C29033400D99FF7 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				631E53382C29036600D99FF7 /* NotificationManager.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		634129C62C1D0FD300B6014D = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +81,7 @@
 		634129D12C1D0FD300B6014D /* todolist */ = {
 			isa = PBXGroup;
 			children = (
+				631E53372C29033400D99FF7 /* Notification */,
 				63B460B12C2894340070B96D /* Utils */,
 				634129F02C23521200B6014D /* Model */,
 				634129EF2C23519500B6014D /* Views */,
@@ -205,6 +216,7 @@
 				63B460B32C2894510070B96D /* utils.swift in Sources */,
 				634129E12C1D102500B6014D /* AddReminderView.swift in Sources */,
 				634129E92C207E8A00B6014D /* UpdateReminderView.swift in Sources */,
+				631E53392C29036600D99FF7 /* NotificationManager.swift in Sources */,
 				634129E32C1D127B00B6014D /* Reminder.swift in Sources */,
 				634129EB2C20D32200B6014D /* test.swift in Sources */,
 				634129E72C1E3B5800B6014D /* ReminderCellView.swift in Sources */,
