@@ -41,39 +41,41 @@ private func findNextDate(in days: [Weekday], after weekday: Int, startingFrom d
     return nil
 }
 
-func createNextRepeatingReminder(for reminder: Reminder, in context: ModelContext) {
+func createNextRepeatingReminder(for reminder: Reminder) -> Reminder? {
     guard let dueDate = reminder.dueDate,
-          !reminder.repeatingDays.isEmpty,
           let nextDueDate = calculateNextDueDate(from: dueDate, repeatingDays: reminder.repeatingDays) else {
-        return
+        return nil
     }
     
-    let newReminder = Reminder(
+    return Reminder(
         title: reminder.title,
         notes: reminder.notes,
         repeatingDays: reminder.repeatingDays,
         dueDate: nextDueDate
     )
-    
-    context.insert(newReminder)
 }
 
 func toggleCompletion(for reminder: Reminder, in context: ModelContext) {
-    reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+    let wasCompleted = reminder.completedAt != nil
+    reminder.completedAt = wasCompleted ? nil : Date()
     
-    if reminder.completedAt == nil {
+    if !wasCompleted && !reminder.repeatingDays.isEmpty {
+        if let newReminder = createNextRepeatingReminder(for: reminder) {
+            context.insert(newReminder)
+        }
+    }
+    
+    if wasCompleted {
         NotificationManager.scheduleNotification(for: reminder)
     } else {
         NotificationManager.removeNotification(for: reminder)
+        reminder.repeatingDays = []
     }
     
-    // 虽然会自动保存, 但也得加这段代码, 否则动画不会生效
+    // 修改对象的属性后 SwiftData 会自动保存修改, 加这段代码的目的是立即保存以便触发排序动画
     do {
         try context.save()
     } catch {
         print("Failed to save context: \(error)")
     }
-    
-    createNextRepeatingReminder(for: reminder, in: context)
 }
-
