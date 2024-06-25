@@ -48,4 +48,12 @@ final class NotificationManager {
         removeNotification(for: reminder)
         scheduleNotification(for: reminder)
     }
+    
+    static func updateBadges(to newCount: Int) {
+        UNUserNotificationCenter.current().setBadgeCount(newCount)
+    }
+    
+    static func clearBadges() {
+        UNUserNotificationCenter.current().setBadgeCount(0)
+    }
 }
