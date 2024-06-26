@@ -79,3 +79,21 @@ func toggleCompletion(for reminder: Reminder, in context: ModelContext) {
         print("Failed to save context: \(error)")
     }
 }
+
+func toggleDrop(for reminder: Reminder, in context: ModelContext) {
+    let wasDropped = reminder.isDropped
+    reminder.isDropped = wasDropped ? false : true
+    reminder.completedAt = wasDropped ? nil : Date()
+    
+    if wasDropped {
+        NotificationManager.scheduleNotification(for: reminder)
+    } else {
+        NotificationManager.removeNotification(for: reminder)
+    }
+    
+    do {
+        try context.save()
+    } catch {
+        print("Failed to save context: \(error)")
+    }
+}

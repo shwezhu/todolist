@@ -54,6 +54,10 @@ struct HomeView: View {
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                     toggleCompletion(for: reminder, in: context)
                                 }
+                            } onDropped: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    toggleDrop(for: reminder, in: context)
+                                }
                             }
                         }
                     }

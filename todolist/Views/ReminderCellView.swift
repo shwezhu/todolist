@@ -12,16 +12,19 @@ struct ReminderCellView: View {
     @Bindable var reminder: Reminder
     var namespace: Namespace.ID
     var onToggle: () -> Void
+    var onDropped: () -> Void
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center) {
             Image(systemName: reminder.completedAt == nil ? "circle" : "largecircle.fill.circle")
                 .imageScale(.large)
-                .foregroundColor(.accentColor)
+                .foregroundStyle(reminder.isDropped ? Color.gray : Color.blue)
                 .matchedGeometryEffect(id: "icon_\(reminder.id)", in: namespace)
                 .onTapGesture(perform: onToggle)
             VStack(alignment: .leading) {
                 Text(reminder.title)
+                    .foregroundStyle(reminder.isDropped ? Color.gray : Color.black)
+                    .strikethrough(reminder.isDropped)
                     .matchedGeometryEffect(id: "title_\(reminder.id)", in: namespace)
                 if !reminder.notes.isEmpty {
                     Text(reminder.notes)
@@ -36,7 +39,14 @@ struct ReminderCellView: View {
                         .matchedGeometryEffect(id: "dueDate_\(reminder.id)", in: namespace)
                 }
             }
+            Spacer()
+            // 使用 Button 点击不会生效, 因为 ReminderCellView 在 NavigationLink 内
+            Image(systemName: "flag.slash")
+                .imageScale(.large)
+                .foregroundStyle(reminder.isDropped ? Color.gray : Color.orange)
+                .onTapGesture(perform: onDropped)
         }
+        .padding()
     }
 }
 
@@ -47,6 +57,10 @@ struct ReminderCellView: View {
     @Namespace var animation
     
     return ReminderCellView(reminder: reminder, namespace: animation) {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+            reminder.completedAt = reminder.completedAt == nil ? Date() : nil
+        }
+    } onDropped: {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
             reminder.completedAt = reminder.completedAt == nil ? Date() : nil
         }

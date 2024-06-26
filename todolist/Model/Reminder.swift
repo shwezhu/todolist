@@ -16,6 +16,7 @@ final class Reminder: Identifiable {
     var title: String
     var notes: String
     var repeatingDays: Set<Weekday>
+    var isDropped: Bool
     var dueDate: Date?
     var completedAt: Date?
     var createdAt: Date
@@ -25,6 +26,7 @@ final class Reminder: Identifiable {
         self.title = title
         self.notes = notes
         self.repeatingDays = repeatingDays
+        self.isDropped = false
         self.dueDate = dueDate
         self.completedAt = nil
         self.createdAt = Date()
