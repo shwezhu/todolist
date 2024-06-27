@@ -55,24 +55,38 @@ func createNextRepeatingReminder(for reminder: Reminder) -> Reminder? {
     )
 }
 
-func toggleCompletion(for reminder: Reminder, in context: ModelContext) {
+enum ReminderToggleAction {
+    case completion
+    case drop
+}
+
+func toggleReminderState(for reminder: Reminder, action: ReminderToggleAction, in context: ModelContext) {
     let wasCompleted = reminder.completedAt != nil
-    reminder.completedAt = wasCompleted ? nil : Date()
+    let wasDropped = reminder.isDropped
     
-    if !wasCompleted && !reminder.repeatingDays.isEmpty {
+    switch action {
+    case .completion:
+        reminder.completedAt = wasCompleted ? nil : Date()
+        reminder.isDropped = false
+    case .drop:
+        reminder.isDropped = !wasDropped
+        reminder.completedAt = wasDropped ? nil : Date()
+    }
+    
+    let shouldCreateNewReminder = !wasCompleted && !wasDropped && !reminder.repeatingDays.isEmpty
+    if shouldCreateNewReminder {
         if let newReminder = createNextRepeatingReminder(for: reminder) {
             context.insert(newReminder)
         }
     }
     
-    if wasCompleted {
+    if reminder.completedAt == nil && !reminder.isDropped {
         NotificationManager.scheduleNotification(for: reminder)
     } else {
         NotificationManager.removeNotification(for: reminder)
         reminder.repeatingDays = []
     }
-    
-    // 修改对象的属性后 SwiftData 会自动保存修改, 加这段代码的目的是立即保存以便触发排序动画
+    // 修改对象的属性后 SwiftData 会自动保存修改, 但加这段代码的目的是立即保存以便触发排序动画
     do {
         try context.save()
     } catch {
@@ -80,20 +94,3 @@ func toggleCompletion(for reminder: Reminder, in context: ModelContext) {
     }
 }
 
-func toggleDrop(for reminder: Reminder, in context: ModelContext) {
-    let wasDropped = reminder.isDropped
-    reminder.isDropped = wasDropped ? false : true
-    reminder.completedAt = wasDropped ? nil : Date()
-    
-    if wasDropped {
-        NotificationManager.scheduleNotification(for: reminder)
-    } else {
-        NotificationManager.removeNotification(for: reminder)
-    }
-    
-    do {
-        try context.save()
-    } catch {
-        print("Failed to save context: \(error)")
-    }
-}

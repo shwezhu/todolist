@@ -52,11 +52,11 @@ struct HomeView: View {
                         NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
                             ReminderCellView(reminder: reminder, namespace: animation) {
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    toggleCompletion(for: reminder, in: context)
+                                    toggleReminderState(for: reminder, action: .completion, in: context)
                                 }
                             } onDropped: {
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    toggleDrop(for: reminder, in: context)
+                                    toggleReminderState(for: reminder, action: .drop, in: context)
                                 }
                             }
                         }
