@@ -28,8 +28,9 @@ struct ReminderFormView: View {
                 Toggle(isOn: $isDueDateSet) {
                     Image(systemName: "calendar")
                         .imageScale(.large)
+                        .foregroundStyle(Color.red)
                 }
-                .tint(.black)
+                .tint(Color.green)
                 .onChange (of: isDueDateSet) {
                     if isDueDateSet {
                         reminder.dueDate = Date()

@@ -41,6 +41,7 @@ struct ReminderListView: View {
                     }
                 }
             }
+            .listStyle(PlainListStyle())
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.large)
         }
