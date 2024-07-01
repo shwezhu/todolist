@@ -12,7 +12,6 @@ struct HomeView: View {
     @Environment(\.modelContext) var context
     @State private var isAddReminderDialogPresented = false
     @State private var filter = ""
-    @Namespace private var animation
     
     // Computed properties can't be used in a query,
     // https://stackoverflow.com/a/77218372/16317008
@@ -49,17 +48,7 @@ struct HomeView: View {
                 .padding()
                 List {
                     ForEach(filteredReminders) { reminder in
-                        NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
-                            ReminderCellView(reminder: reminder, namespace: animation) {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    toggleReminderState(for: reminder, action: .completion, in: context)
-                                }
-                            } onDropped: {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    toggleReminderState(for: reminder, action: .drop, in: context)
-                                }
-                            }
-                        }
+                        ReminderListRowView(reminder: reminder)
                     }
                     .onDelete { indexSet in
                         for index in indexSet {

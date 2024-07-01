@@ -19,7 +19,6 @@ struct DummyView: View {
 struct ReminderListView: View {
     @Environment(\.modelContext) var context
     @Query var reminders: [Reminder]
-    @Namespace private var animation
     @State private var animationId = UUID()
     var title: String
     
@@ -32,17 +31,7 @@ struct ReminderListView: View {
         NavigationStack {
             List {
                 ForEach(reminders) { reminder in
-                    NavigationLink(destination: UpdateReminderView(reminder: reminder)) {
-                        ReminderCellView(reminder: reminder, namespace: animation) {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                toggleReminderState(for: reminder, action: .completion, in: context)
-                            }
-                        } onDropped: {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                toggleReminderState(for: reminder, action: .drop, in: context)
-                            }
-                        }
-                    }
+                    ReminderListRowView(reminder: reminder)
                 }
                 .onDelete { indexSet in
                     for index in indexSet {

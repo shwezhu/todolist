@@ -49,7 +49,7 @@ struct ReminderCellView: View {
             // 使用 Button 点击不会生效, 因为 ReminderCellView 在 NavigationLink 内
             Image(systemName: "flag.slash")
                 .imageScale(.large)
-                .foregroundStyle(reminder.completedAt != nil ? Color.gray : Color.orange)
+                .foregroundStyle(reminder.completedAt == nil ? Color.orange : Color.gray)
                 .onTapGesture(perform: onDropped)
         }
         .padding()
