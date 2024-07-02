@@ -51,6 +51,7 @@ struct ReminderCellView: View {
                 .imageScale(.large)
                 .foregroundStyle(reminder.completedAt == nil ? Color.orange : Color.gray)
                 .onTapGesture(perform: onDropped)
+                //.allowsHitTesting(reminder.completedAt == nil)
         }
         .padding()
     }

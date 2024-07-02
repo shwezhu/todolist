@@ -8,6 +8,10 @@
 import UserNotifications
 
 final class NotificationManager {
+    // Singleton Pattern
+    static let shared = NotificationManager()
+    private var notificationCount = 0
+
     static func requestNotificationPermission() {
         //  UNUserNotificationCenter.current() 是一个全局单例, 无论你在哪里或何时调用它, 总是返回相同的实例
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
@@ -36,6 +40,8 @@ final class NotificationManager {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Failed to add notification: \(error)")
+            } else {
+                shared.incrementBadge()
             }
         }
     }
@@ -55,5 +61,10 @@ final class NotificationManager {
     
     static func clearBadges() {
         UNUserNotificationCenter.current().setBadgeCount(0)
+    }
+    
+    func incrementBadge() {
+        notificationCount += 1
+        NotificationManager.updateBadges(to: notificationCount)
     }
 }

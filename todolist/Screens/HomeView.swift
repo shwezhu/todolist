@@ -12,6 +12,7 @@ struct HomeView: View {
     @Environment(\.modelContext) var context
     @State private var isAddReminderDialogPresented = false
     @State private var filter = ""
+    @State private var refreshID = UUID()
     
     // Computed properties can't be used in a query,
     // https://stackoverflow.com/a/77218372/16317008
@@ -84,6 +85,11 @@ struct HomeView: View {
                     )
                 }
             }
+        }
+        // Refresh HomePage when enter, so that can make overdue reminder color change to red
+        .id(refreshID)
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            refreshID = UUID()
         }
     }
 }

@@ -117,12 +117,12 @@
 		634129EF2C23519500B6014D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				634129F12C23C10200B6014D /* ReminderCatagoryView.swift */,
 				634129F32C245A8B00B6014D /* ReminderListView.swift */,
 				634EAF902C3372F10066A99F /* ReminderListRowView.swift */,
 				634129E62C1E3B5800B6014D /* ReminderCellView.swift */,
 				634129EC2C21CC7300B6014D /* ReminderFormView.swift */,
 				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
-				634129F12C23C10200B6014D /* ReminderCatagoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
