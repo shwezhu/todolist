@@ -1,30 +1,33 @@
-//
-//  NotificationManager.swift
-//  todolist
-//
-//  Created by David Zhu on 2024-06-23.
-//
-
 import UserNotifications
+import UIKit
 
-final class NotificationManager {
+final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     // Singleton Pattern
     static let shared = NotificationManager()
+    
     private var notificationCount = 0 {
         didSet {
             DispatchQueue.main.async {
-                UNUserNotificationCenter.current().setBadgeCount(self.notificationCount)
+                UNUserNotificationCenter.current().setBadgeCount(self.notificationCount) { error in
+                    if let error = error {
+                        print("Failed to set badge count: \(error)")
+                    }
+                }
             }
         }
     }
     
+    private override init() {
+        super.init()
+        UNUserNotificationCenter.current().delegate = self
+    }
+    
     static func requestNotificationPermission() {
-        //  UNUserNotificationCenter.current() 是一个全局单例, 无论你在哪里或何时调用它, 总是返回相同的实例
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if granted {
-                return
+                // print("Notification permission granted")
             } else if let err = error {
-                print("Failed to request notification auhtorization: \(err)")
+                print("Failed to request notification authorization: \(err)")
             }
         }
     }
@@ -43,7 +46,6 @@ final class NotificationManager {
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
         let request = UNNotificationRequest(identifier: reminder.id.uuidString, content: content, trigger: trigger)
 
-        // 此回调函数是成功添加通知后执行, 而不是通知时间到的时候执行
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Failed to add notification: \(error)")
@@ -62,10 +64,33 @@ final class NotificationManager {
     
     static func clearBadges() {
         shared.notificationCount = 0
-        UNUserNotificationCenter.current().setBadgeCount(0)
     }
     
-    static func incraseBadges() {
-        shared.notificationCount += 1
+    // MARK: - UNUserNotificationCenterDelegate
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // 当应用在前台时收到通知时更新 badge
+        self.notificationCount += 1
+        completionHandler([.banner, .sound, .badge])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        // 当用户点击通知时调用
+        completionHandler()
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    // 应用 launch 时被调用
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // 清空 Badges
+        NotificationManager.clearBadges()
+        // 确保 NotificationManager.shared 被初始化
+        _ = NotificationManager.shared
+        return true
     }
 }
