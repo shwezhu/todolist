@@ -43,6 +43,7 @@ final class NotificationManager {
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
         let request = UNNotificationRequest(identifier: reminder.id.uuidString, content: content, trigger: trigger)
 
+        // 此回调函数是成功添加通知后执行, 而不是通知时间到的时候执行
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Failed to add notification: \(error)")
@@ -62,5 +63,9 @@ final class NotificationManager {
     static func clearBadges() {
         shared.notificationCount = 0
         UNUserNotificationCenter.current().setBadgeCount(0)
+    }
+    
+    static func incraseBadges() {
+        shared.notificationCount += 1
     }
 }
