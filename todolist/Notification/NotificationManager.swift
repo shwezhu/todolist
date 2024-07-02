@@ -1,6 +1,16 @@
 import UserNotifications
 import UIKit
 
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    // 应用 launch 时被调用
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        NotificationManager.shared.clearBadges()
+        // 确保 NotificationManager.shared 被初始化
+        _ = NotificationManager.shared
+        return true
+    }
+}
+
 final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     // Singleton Pattern
     static let shared = NotificationManager()
@@ -19,8 +29,15 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     private override init() {
         super.init()
+        // ?
         UNUserNotificationCenter.current().delegate = self
     }
+    
+    func clearBadges() {
+        self.notificationCount = 0
+    }
+    
+    // MARK: -static methods
     
     static func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
@@ -62,13 +79,9 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         scheduleNotification(for: reminder)
     }
     
-    static func clearBadges() {
-        shared.notificationCount = 0
-    }
-    
     // MARK: - UNUserNotificationCenterDelegate
     
-    // Needed if notifications should be presented while the app is in the foreground.
+    // Tells the delegate how to handle a notification that arrived while the app was running in the foreground.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -80,16 +93,5 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         completionHandler()
-    }
-}
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-    // 应用 launch 时被调用
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // 清空 Badges
-        NotificationManager.clearBadges()
-        // 确保 NotificationManager.shared 被初始化
-        _ = NotificationManager.shared
-        return true
     }
 }
