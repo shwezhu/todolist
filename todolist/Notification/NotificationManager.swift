@@ -68,22 +68,17 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     // MARK: - UNUserNotificationCenterDelegate
     
+    // Needed if notifications should be presented while the app is in the foreground.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // When app is running in the foreground, will run this code.
-        if UIApplication.shared.applicationState == .active {
-            completionHandler([.banner])
-        } else {
-            self.notificationCount += 1
-            completionHandler([.banner, .sound, .badge])
-        }
+        completionHandler([.banner])
     }
     
+    // When there is a notification, and user click the notification, this function will be called.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        // When there is a notification, and user click the notification, will run this code.
         completionHandler()
     }
 }
