@@ -71,15 +71,19 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // 当应用在前台时收到通知时更新 badge
-        self.notificationCount += 1
-        completionHandler([.banner, .sound, .badge])
+        // When app is running in the foreground, will run this code.
+        if UIApplication.shared.applicationState == .active {
+            completionHandler([.banner])
+        } else {
+            self.notificationCount += 1
+            completionHandler([.banner, .sound, .badge])
+        }
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        // 当用户点击通知时调用
+        // When there is a notification, and user click the notification, will run this code.
         completionHandler()
     }
 }

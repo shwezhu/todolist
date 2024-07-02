@@ -42,6 +42,7 @@
 		634129F12C23C10200B6014D /* ReminderCatagoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCatagoryView.swift; sourceTree = "<group>"; };
 		634129F32C245A8B00B6014D /* ReminderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListView.swift; sourceTree = "<group>"; };
 		634EAF902C3372F10066A99F /* ReminderListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListRowView.swift; sourceTree = "<group>"; };
+		634EAF922C3491410066A99F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		63B460B22C2894510070B96D /* utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +84,7 @@
 		634129D12C1D0FD300B6014D /* todolist */ = {
 			isa = PBXGroup;
 			children = (
+				634EAF922C3491410066A99F /* Info.plist */,
 				631E53372C29033400D99FF7 /* Notification */,
 				63B460B12C2894340070B96D /* Utils */,
 				634129F02C23521200B6014D /* Model */,
@@ -363,6 +365,7 @@
 				DEVELOPMENT_TEAM = 97P29665X5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = todolist/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -394,6 +397,7 @@
 				DEVELOPMENT_TEAM = 97P29665X5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = todolist/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
