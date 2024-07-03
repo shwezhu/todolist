@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct todolistApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var notificationDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDeleagte
     
     init() {
         NotificationManager.requestNotificationPermission()
