@@ -12,16 +12,21 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
     
     // MARK: - UIApplicationDelegate
     
-    // 应用 launch (杀后台再进) 时被调用, 从后台切入不会被调用
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // 这行代码很重要,
+    // Get called when app launchs, launch is not simply from background to foreground.
+    func application(_ application: UIApplication, 
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        NotificationManager.requestNotificationPermission()
+        // Specify user notification delegate.
         UNUserNotificationCenter.current().delegate = self
         return true
     }
     
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        print("aaa")
-        NotificationManager.clearBadges()
+    func application(_ application: UIApplication, 
+                     configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        // Specify scene delegate.
+        let sceneConfig = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        sceneConfig.delegateClass = SceneDelegate.self
+        return sceneConfig
     }
     
     // MARK: - UNUserNotificationCenterDelegate

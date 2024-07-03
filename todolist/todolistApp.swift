@@ -12,16 +12,9 @@ import SwiftData
 struct todolistApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDeleagte
     
-    init() {
-        NotificationManager.requestNotificationPermission()
-    }
-    
     var body: some Scene {
         WindowGroup {
             HomeView()
-//                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-//                    NotificationManager.clearBadges()
-//                }
         }
         .modelContainer(for: Reminder.self)
     }
