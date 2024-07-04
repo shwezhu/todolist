@@ -18,10 +18,6 @@ struct HomeView: View {
     @Query private var unfinishedReminders: [Reminder]
     @Query private var allReminders: [Reminder]
     
-    private var filteredReminders: [Reminder] {
-        searchText.isEmpty ? unfinishedReminders : allReminders.filter(containsSearchTerm)
-    }
-    
     init() {
         let (scheduledFilter, scheduledSort) = Reminder.predicateFor(.filterScheduledReminder)
         let (unfinishedFilter, unfinishedSort) = Reminder.predicateFor(.filterUnfinishedReminder)
@@ -97,13 +93,17 @@ struct HomeView: View {
         )
     }
     
-    private var willEnterForegroundNotification: NotificationCenter.Publisher {
-        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-    }
-    
     private func containsSearchTerm(_ reminder: Reminder) -> Bool {
         reminder.title.localizedCaseInsensitiveContains(searchText) ||
         reminder.notes.localizedCaseInsensitiveContains(searchText)
+    }
+    
+    private var filteredReminders: [Reminder] {
+        searchText.isEmpty ? unfinishedReminders : allReminders.filter(containsSearchTerm)
+    }
+    
+    private var willEnterForegroundNotification: NotificationCenter.Publisher {
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
     }
     
     private func deleteReminders(at offsets: IndexSet) {

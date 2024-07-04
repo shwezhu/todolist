@@ -61,24 +61,6 @@ extension Reminder {
         let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
         return "Every Week on " + daysText
     }
-    
-    var formattedDueDate: String {
-        let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US")
-        
-        if let date = dueDate {
-            if calendar.isDateInToday(date) {
-                dateFormatter.dateFormat = "'Today,' h:mm a"
-            } else if calendar.isDateInTomorrow(date) {
-                dateFormatter.dateFormat = "'Tomorrow,' h:mm a"
-            } else {
-                dateFormatter.dateFormat = "dd/MM/yyyy, h:mm a"
-            }
-            return dateFormatter.string(from: date)
-        }
-        return ""
-    }
 }
 
 extension Reminder {

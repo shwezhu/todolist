@@ -15,7 +15,6 @@
 		634129E12C1D102500B6014D /* AddReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E02C1D102500B6014D /* AddReminderView.swift */; };
 		634129E32C1D127B00B6014D /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E22C1D127B00B6014D /* Reminder.swift */; };
 		634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */; };
-		634129E72C1E3B5800B6014D /* ReminderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E62C1E3B5800B6014D /* ReminderCellView.swift */; };
 		634129E92C207E8A00B6014D /* UpdateReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129E82C207E8A00B6014D /* UpdateReminderView.swift */; };
 		634129ED2C21CC7300B6014D /* ReminderFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129EC2C21CC7300B6014D /* ReminderFormView.swift */; };
 		634129F22C23C10200B6014D /* ReminderCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634129F12C23C10200B6014D /* ReminderCategoryView.swift */; };
@@ -37,7 +36,6 @@
 		634129E02C1D102500B6014D /* AddReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderView.swift; sourceTree = "<group>"; };
 		634129E22C1D127B00B6014D /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiWeekdayPicker.swift; sourceTree = "<group>"; };
-		634129E62C1E3B5800B6014D /* ReminderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellView.swift; sourceTree = "<group>"; };
 		634129E82C207E8A00B6014D /* UpdateReminderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateReminderView.swift; sourceTree = "<group>"; };
 		634129EC2C21CC7300B6014D /* ReminderFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderFormView.swift; sourceTree = "<group>"; };
 		634129F12C23C10200B6014D /* ReminderCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCategoryView.swift; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 				634129F12C23C10200B6014D /* ReminderCategoryView.swift */,
 				634129F32C245A8B00B6014D /* ReminderListView.swift */,
 				634EAF902C3372F10066A99F /* ReminderListRowView.swift */,
-				634129E62C1E3B5800B6014D /* ReminderCellView.swift */,
 				634129EC2C21CC7300B6014D /* ReminderFormView.swift */,
 				634129E42C1D186D00B6014D /* MultiWeekdayPicker.swift */,
 			);
@@ -241,7 +238,6 @@
 				634129E92C207E8A00B6014D /* UpdateReminderView.swift in Sources */,
 				631E53392C29036600D99FF7 /* NotificationManager.swift in Sources */,
 				634129E32C1D127B00B6014D /* Reminder.swift in Sources */,
-				634129E72C1E3B5800B6014D /* ReminderCellView.swift in Sources */,
 				634129ED2C21CC7300B6014D /* ReminderFormView.swift in Sources */,
 				634129F22C23C10200B6014D /* ReminderCategoryView.swift in Sources */,
 				634129E52C1D186D00B6014D /* MultiWeekdayPicker.swift in Sources */,

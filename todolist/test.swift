@@ -13,49 +13,20 @@ class Item: Identifiable {
     }
 }
 
-@Observable
-class ItemList {
-    var items: [Item]
-    
-    init(items: [Item]) {
-        self.items = items
+struct DetailView: View {
+    let randomNumber = Int.random(in: 1...100)
+    var body: some View {
+        Text("Random Number: \(randomNumber)")
     }
 }
 
 struct ContentView: View {
-    init(itemList: ItemList = ItemList(items: [
-        Item(name: "Apple", count: 1),
-        Item(name: "Banana", count: 2),
-        Item(name: "Cherry", count: 3)
-    ])) {
-        self.itemList = itemList
-    }
-    
-    @State private var itemList = ItemList(items: [
-        Item(name: "Apple", count: 1),
-        Item(name: "Banana", count: 2),
-        Item(name: "Cherry", count: 3)
-    ])
+    @State private var value = 99
     
     var body: some View {
-        VStack {
-            List(itemList.items) { item in
-                HStack {
-                    Text(item.name)
-                    Spacer()
-                    Text("Count: \(item.count)")
-                    Button("Increment") {
-                        item.count += 1
-                        print("Incremented \(item.name) to \(item.count)")
-                    }
-                }
-            }
-            
-            Button("Add New Item") {
-                itemList.items.append(Item(name: "New Item", count: 1))
-                print("Added new item")
-            }
-        }
+        Text("Number: \(value)")
+        DetailView()
+        Button("+") { value += 1 }
     }
 }
 
