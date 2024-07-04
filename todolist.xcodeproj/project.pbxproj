@@ -23,6 +23,7 @@
 		634EAF912C3372F10066A99F /* ReminderListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634EAF902C3372F10066A99F /* ReminderListRowView.swift */; };
 		634EAF952C35D3B20066A99F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634EAF942C35D3B20066A99F /* AppDelegate.swift */; };
 		634EAF972C35D3F90066A99F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634EAF962C35D3F90066A99F /* SceneDelegate.swift */; };
+		638118272C36DCCB007DC4DC /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638118262C36DCCB007DC4DC /* test.swift */; };
 		63B460B32C2894510070B96D /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B460B22C2894510070B96D /* utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		634EAF922C3491410066A99F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		634EAF942C35D3B20066A99F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		634EAF962C35D3F90066A99F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		638118262C36DCCB007DC4DC /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		63B460B22C2894510070B96D /* utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +98,7 @@
 				634129D22C1D0FD300B6014D /* todolistApp.swift */,
 				634129D62C1D0FD400B6014D /* Assets.xcassets */,
 				634129D82C1D0FD400B6014D /* Preview Content */,
+				638118262C36DCCB007DC4DC /* test.swift */,
 			);
 			path = todolist;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				634129F42C245A8B00B6014D /* ReminderListView.swift in Sources */,
 				634EAF952C35D3B20066A99F /* AppDelegate.swift in Sources */,
 				634129D32C1D0FD300B6014D /* todolistApp.swift in Sources */,
+				638118272C36DCCB007DC4DC /* test.swift in Sources */,
 				63B460B32C2894510070B96D /* utils.swift in Sources */,
 				634129E12C1D102500B6014D /* AddReminderView.swift in Sources */,
 				634EAF972C35D3F90066A99F /* SceneDelegate.swift in Sources */,

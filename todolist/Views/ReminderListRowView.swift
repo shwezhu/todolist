@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Observation
 
 struct ReminderListRowView: View {
     @Environment(\.modelContext) private var context
@@ -27,4 +28,6 @@ struct ReminderListRowView: View {
                 .opacity(0)
         }
     }
+    
+    
 }

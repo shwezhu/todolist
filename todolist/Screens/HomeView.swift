@@ -48,10 +48,8 @@ struct HomeView: View {
                 }
             }
         }
-        // Refresh HomePage when enter, so that can make overdue reminder color change to red
-        .id(refreshID)
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            refreshID = UUID()
+        .onReceive(willEnterForegroundNotification) { _ in
+            updateUnfinishedReminderStatus()
         }
     }
     
@@ -99,6 +97,10 @@ struct HomeView: View {
         )
     }
     
+    private var willEnterForegroundNotification: NotificationCenter.Publisher {
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+    }
+    
     private func containsSearchTerm(_ reminder: Reminder) -> Bool {
         reminder.title.localizedCaseInsensitiveContains(searchText) ||
         reminder.notes.localizedCaseInsensitiveContains(searchText)
@@ -109,6 +111,17 @@ struct HomeView: View {
             let reminder = filteredReminders[index]
             NotificationManager.removeNotification(for: reminder)
             context.delete(reminder)
+        }
+    }
+    
+    private func updateUnfinishedReminderStatus() {
+        let currentDate = Date()
+        for index in filteredReminders.indices {
+            if let dueDate = filteredReminders[index].dueDate {
+                filteredReminders[index].isOverdue = filteredReminders[index].completedAt == nil && dueDate < currentDate
+            } else {
+                filteredReminders[index].isOverdue = false
+            }
         }
     }
 }

@@ -14,34 +14,28 @@ struct ReminderCellView: View {
     var onToggle: () -> Void
     var onDropped: () -> Void
     
-    var isOverdue: Bool {
-        guard let dueDate = reminder.dueDate else { return false }
-        // completedAt: 无论完成或被 dropped 的时间
-        return reminder.completedAt == nil && dueDate < Date()
-    }
-    
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: reminder.completedAt == nil ? "circle" : "largecircle.fill.circle")
                 .imageScale(.large)
-                .foregroundStyle(isOverdue ? Color.red : (reminder.isDropped ? Color.gray : Color.blue))
+                .foregroundStyle(reminder.isOverdue ? Color.red : (reminder.isDropped ? Color.gray : Color.blue))
                 .matchedGeometryEffect(id: "icon_\(reminder.id)", in: namespace)
                 .onTapGesture(perform: onToggle)
             VStack(alignment: .leading) {
                 Text(reminder.title)
-                    .foregroundStyle(reminder.isDropped ? Color.gray : (isOverdue ? Color.red : Color.black))
+                    .foregroundStyle(reminder.isDropped ? Color.gray : (reminder.isOverdue ? Color.red : Color.black))
                     .strikethrough(reminder.isDropped)
                     .matchedGeometryEffect(id: "title_\(reminder.id)", in: namespace)
                 if !reminder.notes.isEmpty {
                     Text(reminder.notes)
                         .font(.subheadline)
-                        .foregroundStyle(isOverdue ? Color.red.opacity(0.6) : Color.gray)
+                        .foregroundStyle(reminder.isOverdue ? Color.red.opacity(0.6) : Color.gray)
                         .matchedGeometryEffect(id: "notes_\(reminder.id)", in: namespace)
                 }
                 if reminder.dueDate != nil {
                     Text(reminder.formattedDueDate)
                         .font(.subheadline)
-                        .foregroundStyle(isOverdue ? Color.red.opacity(0.6) : Color.gray)
+                        .foregroundStyle(reminder.isOverdue ? Color.red.opacity(0.6) : Color.gray)
                         .matchedGeometryEffect(id: "dueDate_\(reminder.id)", in: namespace)
                 }
             }

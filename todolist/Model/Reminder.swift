@@ -8,8 +8,8 @@
 import Foundation
 import SwiftData
 
-// @Model also makes your class Observable.
-// 必须使用 @Observable, 否则访问绑定属性不会生效
+// 必须使用 @Observable, 否则之后使用其绑定属性不会生效.
+// @Model makes your class Observable already.
 @Model
 final class Reminder: Identifiable {
     let id: UUID
@@ -17,6 +17,7 @@ final class Reminder: Identifiable {
     var notes: String
     var repeatingDays: Set<Weekday>
     var isDropped: Bool
+    var isOverdue: Bool
     var dueDate: Date?
     var completedAt: Date?
     var createdAt: Date
@@ -27,6 +28,7 @@ final class Reminder: Identifiable {
         self.notes = notes
         self.repeatingDays = repeatingDays
         self.isDropped = false
+        self.isOverdue = false
         self.dueDate = dueDate
         self.completedAt = nil
         self.createdAt = Date()
@@ -54,6 +56,7 @@ extension Weekday {
 }
 
 extension Reminder {
+    // rename repeatingText!!!
     var repeatingText: String {
         let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
         return "Every Week on " + daysText
