@@ -43,7 +43,7 @@ struct HomeView: View {
                 AddReminderView()
             }
             .overlay {
-                if unfinishedReminders.isEmpty {
+                if unfinishedReminders.isEmpty && searchText.isEmpty {
                     emptyStateView
                 }
             }
