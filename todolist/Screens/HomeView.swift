@@ -13,64 +13,33 @@ struct HomeView: View {
     @State private var isAddReminderDialogPresented = false
     @State private var filter = ""
     @State private var refreshID = UUID()
+
+    @Query private var scheduledReminders: [Reminder]
+    @Query private var unfinishedReminders: [Reminder]
+    @Query private var allReminders: [Reminder]
     
-    // Computed properties can't be used in a query,
-    // https://stackoverflow.com/a/77218372/16317008
-    @Query(filter: Reminder.predicateFor(.filterScheduledReminder).0,
-           sort: Reminder.predicateFor(.filterScheduledReminder).1)
-    var scheduledReminders: [Reminder]
-    @Query(filter: Reminder.predicateFor(.filterUnfinishedReminder).0,
-           sort: Reminder.predicateFor(.filterUnfinishedReminder).1)
-    var unFinishedReminders: [Reminder]
-    @Query var allReminders: [Reminder]
-    
-    var filteredReminders: [Reminder] {
-        if filter.isEmpty {
-            return unFinishedReminders
-        } else {
-            return allReminders.filter { reminder in
-                reminder.title.localizedCaseInsensitiveContains(filter) ||
-                reminder.notes.localizedCaseInsensitiveContains(filter)
-            }
+    private var filteredReminders: [Reminder] {
+        guard !filter.isEmpty else { return unfinishedReminders }
+        return allReminders.filter { reminder in
+            reminder.title.localizedCaseInsensitiveContains(filter) ||
+            reminder.notes.localizedCaseInsensitiveContains(filter)
         }
+    }
+    
+    init() {
+        let (scheduledFilter, scheduledSort) = Reminder.predicateFor(.filterScheduledReminder)
+        let (unfinishedFilter, unfinishedSort) = Reminder.predicateFor(.filterUnfinishedReminder)
+        
+        _scheduledReminders = Query(filter: scheduledFilter, sort: scheduledSort)
+        _unfinishedReminders = Query(filter: unfinishedFilter, sort: unfinishedSort)
+        _allReminders = Query()
     }
     
     var body: some View {
         NavigationStack {
             VStack {
-                HStack(spacing: 20) {
-                    NavigationLink (destination: DummyView(title: "ALL", filter: .filterAllReminder)) {
-                        ReminderCatagoryView(reminderCount: allReminders.count, catagoryName: "All")
-                    }
-                    NavigationLink (destination: DummyView(title: "Scheduled", filter: .filterScheduledReminder)) {
-                        ReminderCatagoryView(reminderCount: scheduledReminders.count, catagoryName: "Scheduled")
-                    }
-                }
-                .padding()
-                List {
-                    ForEach(filteredReminders) { reminder in
-                        ReminderListRowView(reminder: reminder)
-                    }
-                    .onDelete { indexSet in
-                        for index in indexSet {
-                            let reminder = filteredReminders[index]
-                            NotificationManager.removeNotification(for: reminder)
-                            context.delete(reminder)
-                        }
-                    }
-                }
-                .searchable(text: $filter, prompt: Text("Search"))
-                .navigationBarTitleDisplayMode(.inline)
-                HStack {
-                    Button {
-                        isAddReminderDialogPresented = true
-                    } label: {
-                        Label("New Reminder", systemImage: "plus")
-                            .fontWeight(.bold)
-                    }
-                    Spacer()
-                }
-                .padding(.leading)
+                reminderCategoryLinks
+                reminderList
             }
             .background(Color(UIColor.systemGray6))
             .listStyle(PlainListStyle())
@@ -78,10 +47,10 @@ struct HomeView: View {
                 AddReminderView()
             }
             .overlay {
-                if unFinishedReminders.isEmpty {
+                if unfinishedReminders.isEmpty {
                     ContentUnavailableView(
                         label: {Label("No Reminders", systemImage: "list.number")},
-                        description: {Text("Add some reminders first to see your reminder list.")}
+                        description: {Text("You have completed all the tasks!")}
                     )
                 }
             }
@@ -90,6 +59,51 @@ struct HomeView: View {
         .id(refreshID)
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             refreshID = UUID()
+        }
+    }
+    
+    private var reminderCategoryLinks: some View {
+        HStack(spacing: 20) {
+            NavigationLink(destination: DummyView(title: "ALL", filter: .filterAllReminder)) {
+                ReminderCategoryView(reminderCount: allReminders.count, categoryName: "All")
+            }
+            NavigationLink(destination: DummyView(title: "Scheduled", filter: .filterScheduledReminder)) {
+                ReminderCategoryView(reminderCount: scheduledReminders.count, categoryName: "Scheduled")
+            }
+        }
+        .padding()
+    }
+    
+    private var reminderList: some View {
+        List {
+            ForEach(filteredReminders) { reminder in
+                ReminderListRowView(reminder: reminder)
+            }
+            .onDelete(perform: deleteReminders)
+        }
+        .searchable(text: $filter, prompt: Text("Search"))
+        .navigationBarTitleDisplayMode(.inline)
+        .listStyle(PlainListStyle())
+        .overlay(alignment: .bottomLeading) {
+            addReminderButton
+        }
+    }
+    
+    private var addReminderButton: some View {
+        Button {
+            isAddReminderDialogPresented = true
+        } label: {
+            Label("New Reminder", systemImage: "plus")
+                .fontWeight(.bold)
+                .padding()
+        }
+    }
+    
+    private func deleteReminders(at offsets: IndexSet) {
+        for index in offsets {
+            let reminder = filteredReminders[index]
+            NotificationManager.removeNotification(for: reminder)
+            context.delete(reminder)
         }
     }
 }

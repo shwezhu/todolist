@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct ReminderCatagoryView: View {
+struct ReminderCategoryView: View {
     var reminderCount = 0
-    var catagoryName = "All"
+    var categoryName = "All"
     
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                Image(systemName: catagoryName == "All" ? "tray.full.fill" : "calendar.badge.clock")
+                Image(systemName: categoryName == "All" ? "tray.full.fill" : "calendar.badge.clock")
                     .imageScale(.large)
-                    .foregroundStyle(catagoryName == "All" ? Color.blue : Color.red)
-                Text(catagoryName)
+                    .foregroundStyle(categoryName == "All" ? Color.blue : Color.red)
+                Text(categoryName)
                     .font(.title3)
                     .bold()
                     .foregroundStyle(Color.gray)
@@ -35,5 +35,5 @@ struct ReminderCatagoryView: View {
 }
 
 #Preview {
-    ReminderCatagoryView()
+    ReminderCategoryView()
 }
