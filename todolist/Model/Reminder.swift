@@ -39,9 +39,7 @@ enum Weekday: Int, CaseIterable, Identifiable, Codable {
     case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 
     var id: Self { self }
-}
-
-extension Weekday {
+    
     var name: String {
         switch self {
         case .sunday: return "Sunday"
@@ -52,14 +50,6 @@ extension Weekday {
         case .friday: return "Friday"
         case .saturday: return "Saturday"
         }
-    }
-}
-
-extension Reminder {
-    // rename repeatingText!!!
-    var repeatingText: String {
-        let daysText = Weekday.allCases.filter { repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
-        return "Every Week on " + daysText
     }
 }
 

@@ -19,51 +19,62 @@ struct ReminderFormView: View {
     
     var body: some View {
         Form {
-            Section {
-                TextField("Title", text: $reminder.title)
-                TextField("Description", text: $reminder.notes, axis: .vertical)
-                    .lineLimit(3...4)
-            }
-            Section {
-                Toggle(isOn: $isDueDateSet) {
-                    Image(systemName: "calendar")
-                        .imageScale(.large)
-                        .foregroundStyle(Color.red)
-                }
-                .tint(Color.green)
-                .onChange (of: isDueDateSet) {
-                    if isDueDateSet {
-                        reminder.dueDate = Date()
-                    } else {
-                        reminder.dueDate = nil
-                    }
-                }
-                if isDueDateSet {
-                    DatePicker("Due Date",
-                               selection: Binding(
-                                get: { reminder.dueDate ?? Date() },
-                                    set: {reminder.dueDate = $0}
-                               ),
-                               displayedComponents: [.date, .hourAndMinute]
-                    )
-                }
-            }
-            
+            titleAndDescriptionSection
+            dueDateSection
             if isDueDateSet {
-                NavigationLink(destination: MultiWeekdayPicker(selectedDays: $reminder.repeatingDays)) {
-                    HStack {
-                        Image(systemName: "repeat")
-                        Text("Repeat")
-                        Spacer()
-                        Text(reminder.repeatingDays.isEmpty ? "Never" : reminder.repeatingText)
-                            .foregroundStyle(Color.gray)
-                    }
-                }
+                repeatSection
             }
         }
     }
     
+    private var titleAndDescriptionSection: some View {
+        Section {
+            TextField("Title", text: $reminder.title)
+            TextField("Description", text: $reminder.notes, axis: .vertical)
+                .lineLimit(3...4)
+        }
+    }
     
+    private var dueDateSection: some View {
+        Section {
+            Toggle(isOn: $isDueDateSet) {
+                Label("Due Date", systemImage: "calendar")
+                    .foregroundStyle(.red)
+            }
+            .tint(.green)
+            .onChange(of: isDueDateSet) { oldValue, newValue in
+                reminder.dueDate = newValue ? Date() : nil
+            }
+            
+            if isDueDateSet {
+                DatePicker("Due Date",
+                           selection: Binding(
+                            get: { reminder.dueDate ?? Date() },
+                            set: { reminder.dueDate = $0 }
+                           ),
+                           displayedComponents: [.date, .hourAndMinute]
+                )
+            }
+        }
+    }
+    
+    private var repeatSection: some View {
+        NavigationLink(destination: MultiWeekdayPicker(selectedDays: $reminder.repeatingDays)) {
+            Label {
+                Text("Repeat")
+                Spacer()
+                Text(repeatingDateText)
+                    .foregroundStyle(.secondary)
+            } icon: {
+                Image(systemName: "repeat")
+            }
+        }
+    }
+    
+    private var repeatingDateText: String {
+        let daysText = Weekday.allCases.filter { reminder.repeatingDays.contains($0) }.map { $0.name }.joined(separator: ", ")
+        return "Every week on " + daysText
+    }
 }
 
 #Preview {
