@@ -11,7 +11,7 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) var context
     @State private var isAddReminderDialogPresented = false
-    @State private var filter = ""
+    @State private var searchText = ""
     @State private var refreshID = UUID()
 
     @Query private var scheduledReminders: [Reminder]
@@ -19,11 +19,7 @@ struct HomeView: View {
     @Query private var allReminders: [Reminder]
     
     private var filteredReminders: [Reminder] {
-        guard !filter.isEmpty else { return unfinishedReminders }
-        return allReminders.filter { reminder in
-            reminder.title.localizedCaseInsensitiveContains(filter) ||
-            reminder.notes.localizedCaseInsensitiveContains(filter)
-        }
+        searchText.isEmpty ? unfinishedReminders : allReminders.filter(containsSearchTerm)
     }
     
     init() {
@@ -48,10 +44,7 @@ struct HomeView: View {
             }
             .overlay {
                 if unfinishedReminders.isEmpty {
-                    ContentUnavailableView(
-                        label: {Label("No Reminders", systemImage: "list.number")},
-                        description: {Text("You have completed all the tasks!")}
-                    )
+                    emptyStateView
                 }
             }
         }
@@ -81,7 +74,7 @@ struct HomeView: View {
             }
             .onDelete(perform: deleteReminders)
         }
-        .searchable(text: $filter, prompt: Text("Search"))
+        .searchable(text: $searchText, prompt: Text("Search"))
         .navigationBarTitleDisplayMode(.inline)
         .listStyle(PlainListStyle())
         .overlay(alignment: .bottomLeading) {
@@ -97,6 +90,18 @@ struct HomeView: View {
                 .fontWeight(.bold)
                 .padding()
         }
+    }
+    
+    private var emptyStateView: some View {
+        ContentUnavailableView(
+            label: { Label("No Reminders", systemImage: "list.number") },
+            description: { Text("You have done all the tasks!!") }
+        )
+    }
+    
+    private func containsSearchTerm(_ reminder: Reminder) -> Bool {
+        reminder.title.localizedCaseInsensitiveContains(searchText) ||
+        reminder.notes.localizedCaseInsensitiveContains(searchText)
     }
     
     private func deleteReminders(at offsets: IndexSet) {
