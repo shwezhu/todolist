@@ -47,12 +47,7 @@ func createNextRepeatingReminder(for reminder: Reminder) -> Reminder? {
         return nil
     }
     
-    return Reminder(
-        title: reminder.title,
-        notes: reminder.notes,
-        repeatingDays: reminder.repeatingDays,
-        dueDate: nextDueDate
-    )
+    return Reminder(original: reminder, newDueDate: nextDueDate)
 }
 
 enum ReminderToggleAction {

@@ -39,6 +39,22 @@ final class Reminder: Identifiable {
         self.createdAt = Date()
         self.resolvedAt = nil
     }
+    
+    // 用于创建重复提醒
+    init(original: Reminder, newDueDate: Date) {
+        self.id = UUID()
+        self.title = original.title
+        self.notes = original.notes
+        self.repeatingDays = original.repeatingDays
+        self.dueDate = newDueDate
+        
+        self.isCompleted = false
+        self.isDropped = false
+        self.isOverdue = false
+        
+        self.createdAt = Date()
+        self.resolvedAt = nil
+    }
 }
 
 enum Weekday: Int, CaseIterable, Identifiable, Codable {
@@ -46,7 +62,7 @@ enum Weekday: Int, CaseIterable, Identifiable, Codable {
 
     var id: Self { self }
     
-    // 优化: 使用静态数组来存储名称，提高性能
+    // 使用静态数组来存储名称，提高性能
     private static let names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     
     var name: String {
@@ -55,7 +71,7 @@ enum Weekday: Int, CaseIterable, Identifiable, Codable {
 }
 
 extension Reminder {
-    // 优化: 使用类型属性来缓存谓词，避免重复创建
+    // 使用类型属性来缓存谓词，避免重复创建
     static let allReminderSorter = [
         SortDescriptor(\Reminder.resolvedAt, order: .forward),
         SortDescriptor(\Reminder.dueDate, order: .forward),
