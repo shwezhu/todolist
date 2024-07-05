@@ -38,8 +38,13 @@ struct ReminderFormView: View {
     private var dueDateSection: some View {
         Section {
             Toggle(isOn: $isDueDateSet) {
-                Label("Due Date", systemImage: "calendar")
-                    .foregroundStyle(.red)
+                Label {
+                    Text("Due Date")
+                        .foregroundColor(.primary)
+                } icon: {
+                    Image(systemName: "calendar")
+                        .foregroundColor(.red)
+                }
             }
             .tint(.green)
             .onChange(of: isDueDateSet) { oldValue, newValue in
@@ -47,7 +52,7 @@ struct ReminderFormView: View {
             }
             
             if isDueDateSet {
-                DatePicker("Due Date",
+                DatePicker("Select Date",
                            selection: Binding(
                             get: { reminder.dueDate ?? Date() },
                             set: { reminder.dueDate = $0 }

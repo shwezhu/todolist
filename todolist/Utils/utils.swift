@@ -60,30 +60,45 @@ enum ReminderToggleAction {
     case drop
 }
 
-// single responsibility???
 func toggleReminderState(for reminder: Reminder, action: ReminderToggleAction, in context: ModelContext) {
+    let oldRepeatingDays = reminder.repeatingDays
+    
+    performToggleAction(for: reminder, action: action)
+    
+    // 在清除重复日期之前处理重复提醒
+    if (reminder.isCompleted || reminder.isDropped) && !oldRepeatingDays.isEmpty {
+        handleRepeatingReminder(for: reminder, with: oldRepeatingDays, in: context)
+    }
+    
+    updateNotification(for: reminder)
+    saveContext(context)
+}
+
+private func performToggleAction(for reminder: Reminder, action: ReminderToggleAction) {
     switch action {
     case .completion:
         reminder.toggleCompletionStatus()
     case .drop:
         reminder.toggleDropStatus()
     }
-    
-    let shouldCreateNewReminder = (reminder.isCompleted || reminder.isDropped) && !reminder.repeatingDays.isEmpty
-    if shouldCreateNewReminder {
-        if let newReminder = createNextRepeatingReminder(for: reminder) {
-            context.insert(newReminder)
-        }
+}
+
+private func handleRepeatingReminder(for reminder: Reminder, with oldRepeatingDays: Set<Weekday>, in context: ModelContext) {
+    if let newReminder = createNextRepeatingReminder(for: reminder.copy(withRepeatingDays: oldRepeatingDays)) {
+        context.insert(newReminder)
     }
-    
+}
+
+private func updateNotification(for reminder: Reminder) {
     if reminder.isDropped || reminder.isCompleted {
         NotificationManager.removeNotification(for: reminder)
         reminder.repeatingDays = []
     } else {
         NotificationManager.scheduleNotification(for: reminder)
     }
-    
-    // 修改对象的属性后 SwiftData 会自动保存修改, 但加这段代码的目的是立即保存以便触发排序动画
+}
+
+private func saveContext(_ context: ModelContext) {
     do {
         try context.save()
     } catch {

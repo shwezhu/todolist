@@ -46,50 +46,40 @@ enum Weekday: Int, CaseIterable, Identifiable, Codable {
 
     var id: Self { self }
     
+    // 优化: 使用静态数组来存储名称，提高性能
+    private static let names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    
     var name: String {
-        switch self {
-        case .sunday: return "Sunday"
-        case .monday: return "Monday"
-        case .tuesday: return "Tuesday"
-        case .wednesday: return "Wednesday"
-        case .thursday: return "Thursday"
-        case .friday: return "Friday"
-        case .saturday: return "Saturday"
-        }
+        Weekday.names[self.rawValue - 1]
     }
 }
 
 extension Reminder {
+    // 优化: 使用类型属性来缓存谓词，避免重复创建
+    static let allReminderSorter = [
+        SortDescriptor(\Reminder.resolvedAt, order: .forward),
+        SortDescriptor(\Reminder.dueDate, order: .forward),
+        SortDescriptor(\Reminder.createdAt, order: .reverse),
+    ]
+    
+    static let scheduledReminderPredicate = #Predicate<Reminder> { $0.dueDate != nil && $0.resolvedAt == nil }
+    static let unscheduledReminderPredicate = #Predicate<Reminder> { $0.dueDate == nil && $0.resolvedAt == nil }
+    static let finishedReminderPredicate = #Predicate<Reminder> { $0.resolvedAt != nil }
+    static let unfinishedReminderPredicate = #Predicate<Reminder> { $0.resolvedAt == nil }
+    
     public static func predicateFor(_ filter: ReminderPredicate) -> (Predicate<Reminder>?, [SortDescriptor<Reminder>]) {
-        var predicater: Predicate<Reminder>?
-        var sorter: [SortDescriptor<Reminder>]
-
         switch filter {
         case .filterAllReminder:
-            predicater = nil
-            sorter = [
-                SortDescriptor(\Reminder.resolvedAt, order: .forward),
-                SortDescriptor(\Reminder.dueDate, order: .forward),
-                SortDescriptor(\Reminder.createdAt, order: .reverse),
-            ]
+            return (nil, allReminderSorter)
         case .filterScheduledReminder:
-            predicater = #Predicate { $0.dueDate != nil && $0.resolvedAt == nil }
-            sorter = [SortDescriptor(\Reminder.dueDate, order: .forward)]
+            return (scheduledReminderPredicate, [SortDescriptor(\Reminder.dueDate, order: .forward)])
         case .filterUnscheduledReminder:
-            predicater = #Predicate { $0.dueDate == nil && $0.resolvedAt == nil }
-            sorter = [SortDescriptor(\Reminder.createdAt, order: .forward)]
+            return (unscheduledReminderPredicate, [SortDescriptor(\Reminder.createdAt, order: .forward)])
         case .filterFinishedReminder:
-            predicater = #Predicate { $0.resolvedAt != nil }
-            sorter = [SortDescriptor(\Reminder.resolvedAt, order: .forward)]
+            return (finishedReminderPredicate, [SortDescriptor(\Reminder.resolvedAt, order: .forward)])
         case .filterUnfinishedReminder:
-            predicater = #Predicate { $0.resolvedAt == nil }
-            sorter = [
-                SortDescriptor(\Reminder.dueDate, order: .forward),
-                SortDescriptor(\Reminder.createdAt, order: .reverse),
-            ]
+            return (unfinishedReminderPredicate, allReminderSorter)
         }
-        
-        return (predicater, sorter)
     }
     
     func toggleCompletionStatus() {
@@ -110,6 +100,23 @@ extension Reminder {
         guard let dueDate = self.dueDate, self.resolvedAt == nil else { return }
         let currentDate = Date()
         self.isOverdue = dueDate < currentDate
+    }
+}
+
+extension Reminder {
+    func copy(withRepeatingDays repeatingDays: Set<Weekday>) -> Reminder {
+        let copy = Reminder(
+            title: self.title,
+            notes: self.notes,
+            repeatingDays: repeatingDays,
+            dueDate: self.dueDate
+        )
+        copy.isCompleted = self.isCompleted
+        copy.isDropped = self.isDropped
+        copy.isOverdue = self.isOverdue
+        copy.createdAt = self.createdAt
+        copy.resolvedAt = self.resolvedAt
+        return copy
     }
 }
 
