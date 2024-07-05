@@ -8,6 +8,11 @@
 import Foundation
 import SwiftData
 
+enum ReminderToggleAction {
+    case completion
+    case drop
+}
+
 func calculateNextDueDate(from date: Date, repeatingDays: Set<Weekday>) -> Date? {
     // Guard against empty repeatingDays set
     guard !repeatingDays.isEmpty else { return nil }
@@ -58,11 +63,6 @@ func createNextRepeatingReminder(for reminder: Reminder) -> Reminder? {
     }
     
     return Reminder(original: reminder, newDueDate: nextDueDate)
-}
-
-enum ReminderToggleAction {
-    case completion
-    case drop
 }
 
 func toggleReminderState(for reminder: Reminder, action: ReminderToggleAction, in context: ModelContext) {
