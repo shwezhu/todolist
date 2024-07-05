@@ -115,13 +115,8 @@ struct HomeView: View {
     }
     
     private func updateUnfinishedReminderStatus() {
-        let currentDate = Date()
-        for index in filteredReminders.indices {
-            if let dueDate = filteredReminders[index].dueDate {
-                filteredReminders[index].isOverdue = filteredReminders[index].completedAt == nil && dueDate < currentDate
-            } else {
-                filteredReminders[index].isOverdue = false
-            }
+        filteredReminders.forEach { reminder in
+            reminder.refreshOverdueStatus()
         }
     }
 }

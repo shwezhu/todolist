@@ -60,32 +60,29 @@ enum ReminderToggleAction {
     case drop
 }
 
+// single responsibility???
 func toggleReminderState(for reminder: Reminder, action: ReminderToggleAction, in context: ModelContext) {
-    let wasCompleted = reminder.completedAt != nil
-    let wasDropped = reminder.isDropped
-    
     switch action {
     case .completion:
-        reminder.completedAt = wasCompleted ? nil : Date()
-        reminder.isDropped = false
+        reminder.toggleCompletionStatus()
     case .drop:
-        reminder.isDropped = !wasDropped
-        reminder.completedAt = wasDropped ? nil : Date()
+        reminder.toggleDropStatus()
     }
     
-    let shouldCreateNewReminder = !wasCompleted && !wasDropped && !reminder.repeatingDays.isEmpty
+    let shouldCreateNewReminder = (reminder.isCompleted || reminder.isDropped) && !reminder.repeatingDays.isEmpty
     if shouldCreateNewReminder {
         if let newReminder = createNextRepeatingReminder(for: reminder) {
             context.insert(newReminder)
         }
     }
     
-    if reminder.completedAt == nil && !reminder.isDropped {
-        NotificationManager.scheduleNotification(for: reminder)
-    } else {
+    if reminder.isDropped || reminder.isCompleted {
         NotificationManager.removeNotification(for: reminder)
         reminder.repeatingDays = []
+    } else {
+        NotificationManager.scheduleNotification(for: reminder)
     }
+    
     // 修改对象的属性后 SwiftData 会自动保存修改, 但加这段代码的目的是立即保存以便触发排序动画
     do {
         try context.save()
@@ -93,6 +90,3 @@ func toggleReminderState(for reminder: Reminder, action: ReminderToggleAction, i
         print("Failed to save context: \(error)")
     }
 }
-
-
-

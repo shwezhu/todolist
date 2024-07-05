@@ -34,7 +34,7 @@ struct ReminderListRowView: View {
     }
     
     private var completionIcon: some View {
-        Image(systemName: reminder.completedAt == nil ? "circle" : "largecircle.fill.circle")
+        Image(systemName: reminder.resolvedAt == nil ? "circle" : "largecircle.fill.circle")
             .imageScale(.large)
             .foregroundStyle(iconColor)
             .matchedGeometryEffect(id: "icon_\(reminder.id)", in: animation)
@@ -67,7 +67,7 @@ struct ReminderListRowView: View {
     private var dropIcon: some View {
         Image(systemName: "flag.slash")
             .imageScale(.large)
-            .foregroundStyle(reminder.completedAt == nil ? .orange : .gray)
+            .foregroundStyle(reminder.resolvedAt == nil ? .orange : .gray)
             .onTapGesture(perform: onDrop)
     }
     
