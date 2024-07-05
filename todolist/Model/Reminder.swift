@@ -57,19 +57,6 @@ final class Reminder: Identifiable {
     }
 }
 
-enum Weekday: Int, CaseIterable, Identifiable, Codable {
-    case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
-
-    var id: Self { self }
-    
-    // 使用静态数组来存储名称，提高性能
-    private static let names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    
-    var name: String {
-        Weekday.names[self.rawValue - 1]
-    }
-}
-
 extension Reminder {
     // 使用类型属性来缓存谓词，避免重复创建
     static let allReminderSorter = [
@@ -140,4 +127,21 @@ enum ReminderPredicate: String, CaseIterable, Identifiable {
     case filterAllReminder, filterScheduledReminder, filterUnscheduledReminder, filterFinishedReminder, filterUnfinishedReminder
 
     var id: Self { self }
+}
+
+enum Weekday: Int, CaseIterable, Identifiable, Codable, Comparable {
+    case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
+
+    var id: Self { self }
+    
+    // 使用静态数组来存储名称，提高性能
+    private static let names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    
+    var name: String {
+        Weekday.names[self.rawValue - 1]
+    }
+    
+    static func < (lhs: Weekday, rhs: Weekday) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
 }
