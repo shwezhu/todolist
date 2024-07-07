@@ -12,7 +12,6 @@ struct HomeView: View {
     @Environment(\.modelContext) var context
     @State private var isAddReminderDialogPresented = false
     @State private var searchText = ""
-    @State private var refreshID = UUID()
 
     @Query private var scheduledReminders: [Reminder]
     @Query private var unfinishedReminders: [Reminder]
